@@ -12,10 +12,12 @@ export interface IUser {
 }
 
 export interface IAuthContext {
-  isAuth: string;
-  signin: (
-    data: { email: string; password: string },
-    callBack: () => void
-  ) => void;
+  isAuth: User;
+  signin: (auth: User, callBack: () => void) => void;
   signout: (callBack: () => void) => void;
+}
+
+export interface User {
+  email: string;
+  password: string;
 }

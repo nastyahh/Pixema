@@ -21,7 +21,7 @@ const Header = () => {
             <Filter />
           </button>
         </div>{" "}
-        <Profile username={"Nastya Khusanava"} />
+        <Profile />
       </div>
     </header>
   );
