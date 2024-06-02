@@ -1,0 +1,9 @@
+.movies {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(266px, 1fr));
+  width: calc(100% - 313px);
+  gap: 31px;
+  &__show_btn {
+    background-color: #323537;
+  }
+}

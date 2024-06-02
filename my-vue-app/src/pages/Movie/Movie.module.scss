@@ -1,0 +1,17 @@
+.movie {
+  display: flex;
+  gap: 42px;
+  &__desc {
+    width: 878px;
+  }
+  &__rating {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  &__details {
+    width: 530px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
