@@ -31,7 +31,7 @@ export const getMovieInfo = createAsyncThunk(
       }
 
       const data = await responce.json();
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue((error as Error).message);
@@ -43,7 +43,8 @@ const moviesSlice = createSlice({
   name: "movies",
   initialState: {
     movies: [],
-    movieInfo: {},
+    movieInfo: {} | Array<{}>,
+    movieInfos: [],
     status: null as null | "loading" | "fulfilled" | "rejected",
   },
   reducers: {},
@@ -55,6 +56,7 @@ const moviesSlice = createSlice({
       })
       .addCase(getMovieInfo.fulfilled, (state, action) => {
         state.movieInfo = action.payload;
+        state.movieInfos.push(action.payload);
       });
   },
 });

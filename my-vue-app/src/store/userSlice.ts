@@ -62,8 +62,10 @@ export const getUser = createAsyncThunk(
         throw new Error("Error :(");
       }
       const data = await responce.json();
-      localStorage.setItem("access_token", data.access);
-      localStorage.setItem("refresh_token", data.refresh);
+
+      localStorage.setItem("access_token", JSON.stringify(data.access));
+      localStorage.setItem("refresh_token", JSON.stringify(data.refresh));
+      dispatch(toggleIsLogged(true));
       return data;
     } catch (error) {
       return rejectWithValue((error as Error).message);
@@ -73,23 +75,24 @@ export const getUser = createAsyncThunk(
 
 export const getUserProfile = createAsyncThunk(
   "user/getUserProfile",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
-      const token = localStorage.getItem("access_token");
+      const token = JSON.parse(localStorage.getItem("access_token") as string);
       console.log(token);
       const responce = await fetch(
         "https://studapi.teachmeskills.by/auth/users/me/",
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: "Bearer " + token,
             "Content-Type": "application/json",
           },
         }
       );
-      if (!responce.ok) {
-        throw new Error("Error fetching user profile");
+      if (responce.status === 401) {
+        dispatch(refreshToken());
       }
+
       const data = await responce.json();
       console.log(data);
       return data;
@@ -132,6 +135,30 @@ export const userActivate = createAsyncThunk(
   }
 );
 
+export const refreshToken = createAsyncThunk(
+  "user/refreshToken",
+  async (_, { rejectWithValue }) => {
+    try {
+      const refresh = localStorage.getItem("refresh__token") as string;
+      const responce = await fetch(
+        "https://studapi.teachmeskills.by/auth/jwt/refresh/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ refresh_token: refresh }),
+        }
+      );
+      const data = await responce.json();
+      console.log(data);
+      const accessToken = data.access;
+      localStorage.setItem("access_token", accessToken);
+      return accessToken;
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -139,10 +166,14 @@ const userSlice = createSlice({
     profile: null,
     status: null as null | "loading" | "fulfilled" | "rejected",
     error: null as null | string,
+    isLogged: false,
   },
   reducers: {
     addUser(state, action) {
       state.user = action.payload;
+    },
+    toggleIsLogged(state, action) {
+      state.isLogged = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -164,5 +195,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { addUser } = userSlice.actions;
+export const { addUser, toggleIsLogged } = userSlice.actions;
 export default userSlice.reducer;

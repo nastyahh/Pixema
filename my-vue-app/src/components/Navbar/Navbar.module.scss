@@ -8,6 +8,11 @@
 
 .navbar {
   width: 313px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 30px;
   &__item {
     position: relative;
     margin-bottom: 40px;

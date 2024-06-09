@@ -15,7 +15,7 @@ const Movie = () => {
 
   useEffect(() => {
     dispatch(getMovieInfo(imdbID));
-  }, []);
+  }, [imdbID]);
 
   const movieInfo = useSelector((state) => state.movies.movieInfo);
   const modifyGenre =

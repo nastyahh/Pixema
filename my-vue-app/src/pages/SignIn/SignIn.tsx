@@ -3,7 +3,6 @@ import styles from "./SignIn.module.scss";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getUser, getUserProfile } from "../../store/userSlice";
-import { useAuth } from "../../hook/useAuth";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 
 const SignIn = () => {
@@ -24,9 +23,6 @@ const SignIn = () => {
     });
   };
 
-  const { isAuth } = useAuth();
-  const { signin } = useAuth();
-
   const fromPage =
     (location.state && location.state.from && location.state.from.pathname) ||
     "/";
@@ -36,14 +32,10 @@ const SignIn = () => {
     dispatch(getUser(userLogin)).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(getUserProfile());
-        signin(userLogin, () =>
-          navigate(fromPage, { state: { fromPage }, replace: true })
-        );
+        navigate(fromPage);
       }
     });
   };
-
-  console.log(isAuth);
 
   console.log(userLogin);
 

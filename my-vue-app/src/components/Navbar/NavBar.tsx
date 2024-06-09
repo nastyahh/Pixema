@@ -31,6 +31,7 @@ const Navbar = () => {
           </NavLink>
         </li>
       </ul>
+      <span className={styles.navbar__copyright}>© All Rights Reserved</span>
     </div>
   );
 };

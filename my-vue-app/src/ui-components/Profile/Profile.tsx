@@ -3,40 +3,38 @@ import styles from "./Profile.module.scss";
 import { ReactComponent as ArrowBottom } from "../../assets/profileArrow.svg";
 import { ReactComponent as ArrowRight } from "../../assets/arrowRight.svg";
 import { ReactComponent as SignIn } from "../../assets/profile.svg";
-import { useAuth } from "../../hook/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getUserProfile } from "../../store/userSlice";
+import { getUser, getUserProfile, toggleIsLogged } from "../../store/userSlice";
+import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 
 const Profile = () => {
   // const [firstName, lastName] = username.split(" ");
-  const { isAuth, signout } = useAuth();
 
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
+  const isLogged = useSelector((state) => state.user.isLogged);
 
   const user = useSelector((state) => state.user.profile);
 
-  const name = user ? user.username : "";
-
   const logOut = () => {
-    signout(() => navigate("/", { replace: true }));
+    dispatch(toggleIsLogged(false));
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
   };
 
+  useEffect(() => {
+    dispatch(getUserProfile());
+  }, [isLogged]);
+
   console.log(user);
-  // console.log(name);
-  console.log(isAuth);
-  return isAuth.email ? (
+  // console.log(isLogged);
+  return isLogged ? (
     <div className={styles.user}>
-      <div className={styles.user__avatar}>
-        {/* {firstName.charAt(0).toUpperCase()}
-        {lastName.charAt(0).toUpperCase()} */}
-      </div>
+      <div className={styles.user__avatar}></div>
       <div className={styles.user__name}>
-        {/* <span>{firstName}</span>
-        <span>{lastName}</span> */}
-        <span>{name}</span>
+        <span>{user ? user.username : "loading"}</span>
       </div>
       <button>
         <ArrowBottom />

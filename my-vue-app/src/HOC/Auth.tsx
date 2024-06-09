@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { IChildren } from "../utility/types";
-import { useAuth } from "../hook/useAuth";
+import { useSelector } from "react-redux";
 
 const Auth = ({ children }: IChildren) => {
   const location = useLocation();
@@ -14,8 +14,8 @@ const Auth = ({ children }: IChildren) => {
   // }
   //
 
-  const { isAuth } = useAuth() || {};
-  if (isAuth.email) {
+  const isLogged = useSelector((state) => state.user.isLogged);
+  if (!isLogged) {
     return <Navigate to={"/sign-in"} state={{ from: location }} />;
     // Помимо того что мы перенаравляем пользателя на логин старницу,
     // мы можем передать state который будет доступен через useLocation()

@@ -4,9 +4,11 @@ import Movies from "../../ui-components/Movies/Movies";
 
 const Favorites = () => {
   const favorites = useSelector((state) => state.favorites.favoriteMovies);
+  const movieInfos = useSelector((state) => state.movies.movieInfos);
+
   return (
     <div className={styles.favorites}>
-      <Movies data={favorites} />
+      <Movies data={favorites} movieInfos={movieInfos} />
     </div>
   );
 };

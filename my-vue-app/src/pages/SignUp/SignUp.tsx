@@ -2,8 +2,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "../SignIn/SignIn.module.scss";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser } from "../../store/userSlice";
-import { useAuth } from "../../hook/useAuth";
+import { createUser, getUser, getUserProfile } from "../../store/userSlice";
+import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 
 const SignUp = () => {
   const [userSignUp, setUserSignUp] = useState({
@@ -13,11 +13,10 @@ const SignUp = () => {
     course_group: 7,
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { signin } = useAuth();
   const fromPage =
     (location.state && location.state.from && location.state.from.pathname) ||
     "/";
@@ -34,7 +33,17 @@ const SignUp = () => {
     event.preventDefault();
     dispatch(createUser(userSignUp)).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
-        signin(userSignUp, () => navigate(fromPage, { replace: true }));
+        dispatch(
+          getUser({ email: userSignUp.email, password: userSignUp.password })
+        ).then((login) => {
+          if (login.meta.requestStatus === "fulfilled") {
+            dispatch(getUserProfile()).then((profileResult) => {
+              if (profileResult.meta.requestStatus === "fulfilled") {
+                navigate(fromPage);
+              }
+            });
+          }
+        });
       }
     });
   };

@@ -9,6 +9,7 @@ import Home from "./pages/Home/Home";
 import Movie from "./pages/Movie/Movie";
 import Favorites from "./pages/Favorites/Favorites";
 import Trends from "./pages/Trends/Trends";
+import Auth from "./HOC/Auth";
 
 function App() {
   return (
@@ -17,7 +18,14 @@ function App() {
         <Route index element={<Home />} />
         <Route path="activate/:uid/:token" element={<Activation />} />
         <Route path="/:imdbID" element={<Movie />} />
-        <Route path="favorites" element={<Favorites />} />
+        <Route
+          path="favorites"
+          element={
+            <Auth>
+              <Favorites />
+            </Auth>
+          }
+        />
         <Route path="trends" element={<Trends />} />
       </Route>
       <Route element={<AuthLayout />}>
