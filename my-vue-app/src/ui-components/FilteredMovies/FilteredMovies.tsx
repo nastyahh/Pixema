@@ -1,13 +1,8 @@
 import { Link } from "react-router-dom";
-import styles from "./Movies.module.scss";
+import styles from "./FilteredMovies.module.scss";
 
-const Movies = ({ data, movieInfos }) => {
+const FilteredMovies = ({ data }) => {
   const moviesToRender = data.map(({ imdbID, Title, Poster }) => {
-    // const movieInfo = movieInfos.find((info) => info.imdbID === imdbID) || {};
-    let movieInfo = Array<{}>;
-    if (Array.isArray(movieInfos)) {
-      movieInfo = movieInfos.find((info) => info.imdbID === imdbID) || {};
-    }
     return (
       <div key={imdbID} className={styles.movies__item}>
         <div className={styles.movies__item__poster}>
@@ -16,11 +11,11 @@ const Movies = ({ data, movieInfos }) => {
         <div className={styles.movies__item__title}>
           <Link to={`/${imdbID}`}>{Title}</Link>
         </div>
-        <p>{movieInfo.imdbRating || ""}</p>
+        <p>{imdbID}</p>
       </div>
     );
   });
   return <>{moviesToRender}</>;
 };
 
-export default Movies;
+export default FilteredMovies;

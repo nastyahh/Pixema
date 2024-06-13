@@ -37,35 +37,37 @@ const SignIn = () => {
     });
   };
 
-  console.log(userLogin);
+  // console.log(userLogin);
 
   return (
-    <form className={styles.signIn} onSubmit={handleSignIn}>
-      <h3 className={styles.signIn__title}>Sign In</h3>
-      <label htmlFor="">Email</label>
-      <input
-        type="email"
-        name="email"
-        value={userLogin.email}
-        onChange={InputChange}
-        placeholder="Your email"
-      />
-      <label htmlFor="">Password</label>
-      <input
-        type="password"
-        name="password"
-        value={userLogin.password}
-        onChange={InputChange}
-        placeholder="Your password"
-      />
-      <p className={styles.signIn__forgot}>Forgot password?</p>
-      <button className={styles.signIn__btn} type="submit">
-        Sign In
-      </button>
-      <p className={styles.signIn__registration}>
-        Don’t have an account?<Link to="/sign-up"> Sign Up</Link>
-      </p>
-    </form>
+    <div className={styles.signIn__wrapper}>
+      <form className={styles.signIn} onSubmit={handleSignIn}>
+        <h3 className={styles.signIn__title}>Sign In</h3>
+        <label htmlFor="">Email</label>
+        <input
+          type="email"
+          name="email"
+          value={userLogin.email}
+          onChange={InputChange}
+          placeholder="Your email"
+        />
+        <label htmlFor="">Password</label>
+        <input
+          type="password"
+          name="password"
+          value={userLogin.password}
+          onChange={InputChange}
+          placeholder="Your password"
+        />
+        <p className={styles.signIn__forgot}>Forgot password?</p>
+        <button className={styles.signIn__btn} type="submit">
+          Sign In
+        </button>
+        <p className={styles.signIn__registration}>
+          Don’t have an account?<Link to="/sign-up"> Sign Up</Link>
+        </p>
+      </form>
+    </div>
   );
 };
 

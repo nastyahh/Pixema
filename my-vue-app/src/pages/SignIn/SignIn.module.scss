@@ -13,6 +13,14 @@ input:not(:last-of-type) {
   margin-bottom: 24px;
 }
 
+.signIn__wrapper {
+  min-height: 100vh;
+  background: url("./assets/sign-in-frame.png") center no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+
 .signIn {
   width: 574px;
   margin: 0 auto;

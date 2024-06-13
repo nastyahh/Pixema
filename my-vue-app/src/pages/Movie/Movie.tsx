@@ -13,6 +13,9 @@ const Movie = () => {
   const { imdbID } = useParams();
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
 
+  const recommend = useSelector((state) => state.movies.movieInfos);
+
+  console.log("infos movie", recommend);
   useEffect(() => {
     dispatch(getMovieInfo(imdbID));
   }, [imdbID]);
@@ -71,6 +74,7 @@ const Movie = () => {
           </ul>
         </div>
       </div>
+      <div className={styles.recommend}></div>
     </div>
   );
 };

@@ -6,12 +6,10 @@ import { ReactComponent as SignIn } from "../../assets/profile.svg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getUser, getUserProfile, toggleIsLogged } from "../../store/userSlice";
+import { getUserProfile, toggleIsLogged } from "../../store/userSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 
 const Profile = () => {
-  // const [firstName, lastName] = username.split(" ");
-
   const navigate = useNavigate();
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
   const isLogged = useSelector((state) => state.user.isLogged);
@@ -28,7 +26,7 @@ const Profile = () => {
     dispatch(getUserProfile());
   }, [isLogged]);
 
-  console.log(user);
+  // console.log(user);
   // console.log(isLogged);
   return isLogged ? (
     <div className={styles.user}>

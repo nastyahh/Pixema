@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ActivateUser } from "../utility/types";
 
 export const createUser = createAsyncThunk(
   "user/createUser",
@@ -63,8 +64,9 @@ export const getUser = createAsyncThunk(
       }
       const data = await responce.json();
 
-      localStorage.setItem("access_token", JSON.stringify(data.access));
-      localStorage.setItem("refresh_token", JSON.stringify(data.refresh));
+      localStorage.setItem("Login", JSON.stringify(data));
+      //   console.log("Access Token:", localStorage.getItem("access_token"));
+      //   console.log("Refresh Token:", localStorage.getItem("refresh_token"));
       dispatch(toggleIsLogged(true));
       return data;
     } catch (error) {
@@ -77,14 +79,14 @@ export const getUserProfile = createAsyncThunk(
   "user/getUserProfile",
   async (_, { rejectWithValue, dispatch }) => {
     try {
-      const token = JSON.parse(localStorage.getItem("access_token") as string);
-      console.log(token);
+      const { access } = JSON.parse(localStorage.getItem("Login") as string);
+      //   console.log(access);
       const responce = await fetch(
         "https://studapi.teachmeskills.by/auth/users/me/",
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + access,
             "Content-Type": "application/json",
           },
         }
@@ -104,23 +106,20 @@ export const getUserProfile = createAsyncThunk(
 
 export const userActivate = createAsyncThunk(
   "user/userActivate",
-  async (
-    activateObj: {
-      uid: string;
-      token: string;
-    },
-    { rejectWithValue }
-  ) => {
+  async (activateObj: ActivateUser, { rejectWithValue }) => {
     try {
+      const activateData = {
+        uid: activateObj.uid,
+        token: activateObj.token,
+      };
+      console.log(activateData);
       const responce = await fetch(
         "https://studapi.teachmeskills.by/auth/users/activation/",
         {
           method: "POST",
-          body: JSON.stringify(activateObj),
+          body: JSON.stringify(activateData),
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken":
-              "2u9EiabuRdAvpzVVsb1AyBCN4NHiCd5Ea3MCV5Pzj5kaopDjEW0Dqhmb3jXgmn3p",
           },
         }
       );
@@ -128,7 +127,7 @@ export const userActivate = createAsyncThunk(
         throw new Error("Error :(");
       }
       const data = await responce.json();
-      return data;
+      console.log(data);
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
@@ -137,22 +136,25 @@ export const userActivate = createAsyncThunk(
 
 export const refreshToken = createAsyncThunk(
   "user/refreshToken",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
-      const refresh = localStorage.getItem("refresh__token") as string;
+      const { refresh } = JSON.parse(localStorage.getItem("Login") as string);
+      console.log("Read Refresh Token:", refresh);
       const responce = await fetch(
         "https://studapi.teachmeskills.by/auth/jwt/refresh/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refresh_token: refresh }),
+          body: JSON.stringify({ refresh: refresh }),
         }
       );
       const data = await responce.json();
-      console.log(data);
-      const accessToken = data.access;
-      localStorage.setItem("access_token", accessToken);
-      return accessToken;
+      //   console.log(data);
+      localStorage.setItem(
+        "Login",
+        JSON.stringify({ refresh: refresh, access: data.access })
+      );
+      dispatch(getUserProfile());
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }

@@ -10,6 +10,8 @@ import Movie from "./pages/Movie/Movie";
 import Favorites from "./pages/Favorites/Favorites";
 import Trends from "./pages/Trends/Trends";
 import Auth from "./HOC/Auth";
+import Settings from "./pages/Settings/Settings";
+import SearchByFilters from "./pages/SearchByFilters/SearchByFilters";
 
 function App() {
   return (
@@ -27,12 +29,14 @@ function App() {
           }
         />
         <Route path="trends" element={<Trends />} />
+        <Route path="settings" element={<Settings />} />
+        <Route path="search-by-filters" element={<SearchByFilters />} />
       </Route>
       <Route element={<AuthLayout />}>
         {" "}
         <Route path="sign-in" element={<SignIn />} />
         <Route path="sign-up" element={<SignUp />} />
-      </Route>
+      </Route>{" "}
     </Routes>
   );
 }

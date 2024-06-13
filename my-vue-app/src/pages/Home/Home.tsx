@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./Home.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { getMovieInfo, getMovies } from "../../store/moviesSlice";
+import { clearMovies, getMovieInfo, getMovies } from "../../store/moviesSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import Movies from "../../ui-components/Movies/Movies";
 import { fetchMovies } from "../../store/paginationSlice";
@@ -18,13 +18,8 @@ const Home = () => {
 
   const [page, setPage] = useState(2);
 
-  //   const info = data.map((movie) => {
-  //     const id = movie.imdbID;
-  //     const obj = dispatch(getMovieInfo(id));
-  //     return obj;
-  //   });
-
   useEffect(() => {
+    dispatch(clearMovies());
     dispatch(getMovies());
   }, []);
   useEffect(() => {
@@ -34,20 +29,17 @@ const Home = () => {
         allMovies.map((movie) => dispatch(getMovieInfo(movie.imdbID)))
       );
     }
-  }, [data, movies]);
+  }, []);
 
   const loadMoreMovies = () => {
     dispatch(fetchMovies(page));
     setPage(page + 1);
   };
 
-  //   console.log(movieInfos);
-  //   const displayMovies = searchResults.length > 0 ? searchResults : movies;
+  //   console.log("infos", movieInfos);
+
   return (
     <div className={styles.movies}>
-      {/* <div className={styles.movies__wrapper}> */}
-      {/* <Movies data={data} />
-        <Movies data={movies} /> */}
       {searchResults.length > 0 ? (
         <div className={styles.movies__wrapper}>
           <Movies data={searchResults} movieInfos={movieInfos} />
@@ -74,21 +66,6 @@ const Home = () => {
           </div>
         </>
       )}
-      {/* </div> */}
-      {/* <div className={styles.movies__btnWrapper}>
-        {searchResults.length > 0 ? (
-          ""
-        ) : (
-          <button className={styles.movies__show_btn} onClick={loadMoreMovies}>
-            Show more{" "}
-            {status === "loading" ? (
-              <span className={styles.spinner}></span>
-            ) : (
-              ""
-            )}
-          </button>
-        )}
-      </div> */}
     </div>
   );
 };

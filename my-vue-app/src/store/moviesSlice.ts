@@ -47,7 +47,11 @@ const moviesSlice = createSlice({
     movieInfos: [],
     status: null as null | "loading" | "fulfilled" | "rejected",
   },
-  reducers: {},
+  reducers: {
+    clearMovies(state) {
+      state.movies = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getMovies.fulfilled, (state, action) => {
@@ -55,10 +59,18 @@ const moviesSlice = createSlice({
         state.movies = action.payload;
       })
       .addCase(getMovieInfo.fulfilled, (state, action) => {
+        // state.movieInfo = action.payload;
+        // state.movieInfos.push(action.payload);
         state.movieInfo = action.payload;
-        state.movieInfos.push(action.payload);
+        const existingMovie = state.movieInfos.find(
+          (movie) => movie.imdbID === action.payload.imdbID
+        );
+        if (!existingMovie) {
+          state.movieInfos.push(action.payload);
+        }
       });
   },
 });
 
+export const { clearMovies } = moviesSlice.actions;
 export default moviesSlice.reducer;
