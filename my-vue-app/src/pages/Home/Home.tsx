@@ -5,19 +5,35 @@ import { clearMovies, getMovieInfo, getMovies } from "../../store/moviesSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import Movies from "../../ui-components/Movies/Movies";
 import { fetchMovies } from "../../store/paginationSlice";
+import { State } from "../../utility/types";
 
 const Home = () => {
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
 
-  const data = useSelector((state) => state.movies.movies);
-  const movies = useSelector((state) => state.pagination.movies);
-  const status = useSelector((state) => state.pagination.status);
-  const searchResults = useSelector((state) => state.search.searchMovies) || [];
+  const data = useSelector((state: State) => state.movies.movies);
+  const movies = useSelector((state: State) => state.pagination.movies);
+  const status = useSelector((state: State) => state.pagination.status);
+  const searchResults =
+    useSelector((state: State) => state.search.searchMovies) || [];
 
-  const movieInfos = useSelector((state) => state.movies.movieInfos);
+  const movieInfos = useSelector((state: State) => state.movies.movieInfos);
 
   const [page, setPage] = useState(2);
 
+  //   useEffect(() => {
+  //     const fetchMoviesWithInfo = async () => {
+  //       dispatch(clearMovies());
+  //       const movieList = await dispatch(getMovies()).unwrap();
+  //       const allMovies = [...movieList, ...movies];
+  //       if (allMovies.length > 0) {
+  //         await Promise.all(
+  //           allMovies.map((movie) => dispatch(getMovieInfo(movie.imdbID)))
+  //         );
+  //       }
+  //     };
+
+  //     fetchMoviesWithInfo();
+  //   }, []);
   useEffect(() => {
     dispatch(clearMovies());
     dispatch(getMovies());
@@ -29,14 +45,12 @@ const Home = () => {
         allMovies.map((movie) => dispatch(getMovieInfo(movie.imdbID)))
       );
     }
-  }, []);
+  }, [data, movies]);
 
   const loadMoreMovies = () => {
     dispatch(fetchMovies(page));
     setPage(page + 1);
   };
-
-  //   console.log("infos", movieInfos);
 
   return (
     <div className={styles.movies}>

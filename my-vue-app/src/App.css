@@ -14,20 +14,16 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  /* background-color: #000; */
 }
 .app {
   min-height: 100vh;
 }
 .app.light {
-  background: #fff;
+  background: #c5add5;
   color: #000;
 }
-.app.light form {
-  background: #fff;
-}
 .app.dark {
-  background: #000;
+  background: #1b0124;
 }
 
 .container {

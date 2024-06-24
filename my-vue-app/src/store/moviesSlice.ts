@@ -5,7 +5,7 @@ export const getMovies = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const responce = await fetch(
-        "https://www.omdbapi.com/?apikey=2c09a177&s=movie"
+        "https://www.omdbapi.com/?apikey=2c09a177&s=kitty"
       );
       if (!responce.ok) {
         throw new Error("Error fetching movies");
@@ -13,6 +13,44 @@ export const getMovies = createAsyncThunk(
 
       const data = await responce.json();
       return data.Search;
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
+
+export const fetchRecommendedMovies = createAsyncThunk(
+  "movies/fetchRecommendedMovies",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        "https://www.omdbapi.com/?apikey=2c09a177&s=kitty"
+      );
+      if (!response.ok) {
+        throw new Error("Error fetching movies");
+      }
+      const data = await response.json();
+      const movies = data.Search;
+
+      // Получаем подробную информацию для каждого фильма
+      const movieDetails = await Promise.all(
+        movies.map(async (movie) => {
+          const detailsResponse = await fetch(
+            `https://www.omdbapi.com/?apikey=2c09a177&i=${movie.imdbID}&plot=full`
+          );
+          if (!detailsResponse.ok) {
+            throw new Error("Error fetching movie details");
+          }
+          return detailsResponse.json();
+        })
+      );
+
+      // Фильтруем фильмы по рейтингу
+      const recommendedMovies = movieDetails.filter(
+        (movie) => parseFloat(movie.imdbRating) > 7.0
+      );
+
+      return recommendedMovies;
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
@@ -31,7 +69,6 @@ export const getMovieInfo = createAsyncThunk(
       }
 
       const data = await responce.json();
-      // console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue((error as Error).message);
@@ -45,7 +82,14 @@ const moviesSlice = createSlice({
     movies: [],
     movieInfo: {} | Array<{}>,
     movieInfos: [],
+    recommendedMovies: [],
+    recommendedMoviesStatus: null as
+      | null
+      | "loading"
+      | "fulfilled"
+      | "rejected",
     status: null as null | "loading" | "fulfilled" | "rejected",
+    movieInfoStatus: null as null | "loading" | "fulfilled" | "rejected",
   },
   reducers: {
     clearMovies(state) {
@@ -58,9 +102,11 @@ const moviesSlice = createSlice({
         state.status = "fulfilled";
         state.movies = action.payload;
       })
+      .addCase(getMovieInfo.pending, (state) => {
+        state.movieInfoStatus = "loading";
+      })
       .addCase(getMovieInfo.fulfilled, (state, action) => {
-        // state.movieInfo = action.payload;
-        // state.movieInfos.push(action.payload);
+        state.movieInfoStatus = "fulfilled";
         state.movieInfo = action.payload;
         const existingMovie = state.movieInfos.find(
           (movie) => movie.imdbID === action.payload.imdbID
@@ -68,6 +114,12 @@ const moviesSlice = createSlice({
         if (!existingMovie) {
           state.movieInfos.push(action.payload);
         }
+      })
+      .addCase(fetchRecommendedMovies.pending, (state) => {
+        state.recommendedMoviesStatus = "loading";
+      })
+      .addCase(fetchRecommendedMovies.fulfilled, (state, action) => {
+        state.recommendedMovies = action.payload;
       });
   },
 });

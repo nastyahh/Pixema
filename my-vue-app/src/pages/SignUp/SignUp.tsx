@@ -48,8 +48,6 @@ const SignUp = () => {
     });
   };
 
-  console.log(userSignUp);
-
   return (
     <form className={styles.signIn} onSubmit={handleSignUp}>
       <h3 className={styles.signIn__title}>Sign Up</h3>

@@ -16,7 +16,12 @@ const Movies = ({ data, movieInfos }) => {
         <div className={styles.movies__item__title}>
           <Link to={`/${imdbID}`}>{Title}</Link>
         </div>
-        <p>{movieInfo.imdbRating || ""}</p>
+        <span className={styles.movies__item__rating}>
+          {movieInfo.imdbRating || ""}
+        </span>
+        <div className={styles.movies__item__genres}>
+          {movieInfo.Genre ? movieInfo.Genre.split(",").join(" •") : ""}
+        </div>
       </div>
     );
   });

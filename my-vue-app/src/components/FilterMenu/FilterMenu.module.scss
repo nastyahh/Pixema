@@ -29,13 +29,18 @@ input {
     gap: 40px;
     margin-bottom: 25px;
   }
-  &__searchBtn {
+  &__searchBtn,
+  &__clearFilters {
     padding: 17px 50px;
     background-color: #7b61ff;
+  }
+  &__clearFilters {
+    background-color: #323537;
   }
   &__actions {
     display: flex;
     margin-top: auto;
+    gap: 40px;
   }
 }
 
@@ -43,4 +48,8 @@ input {
   position: absolute;
   right: 40px;
   top: 48px;
+}
+
+form {
+  margin-bottom: 110px;
 }

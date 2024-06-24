@@ -11,7 +11,6 @@ const FilteredMovies = ({ data }) => {
         <div className={styles.movies__item__title}>
           <Link to={`/${imdbID}`}>{Title}</Link>
         </div>
-        <p>{imdbID}</p>
       </div>
     );
   });

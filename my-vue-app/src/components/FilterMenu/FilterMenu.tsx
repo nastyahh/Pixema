@@ -13,16 +13,17 @@ const FilterMenu = () => {
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
   const navigate = useNavigate();
 
-  const [searchQuery, setSearchQuery] = useState({
+  const initialSearchQuery = {
     title: "",
     year: "",
     genre: "",
     minRating: "",
     maxRating: "",
     country: "",
-  });
+  };
 
-  //   const movies = useSelector((state) => state.search.searchByFilters);
+  const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
+
   if (!isFilterMenuOpen) return null;
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +33,6 @@ const FilterMenu = () => {
 
   const handleSearch = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // dispatch(clearSearchFull());
     dispatch(
       searchByFilters({
         ...searchQuery,
@@ -41,6 +41,10 @@ const FilterMenu = () => {
     );
     toggleFilterMenu();
     navigate("/search-by-filters");
+  };
+
+  const clearFilters = () => {
+    setSearchQuery(initialSearchQuery);
   };
 
   return (
@@ -102,12 +106,22 @@ const FilterMenu = () => {
           onChange={handleInput}
           placeholder="Country"
         />
-        <div className={styles.filterMenu__actions}>
-          <button type="submit" className={styles.filterMenu__searchBtn}>
-            Show results
-          </button>
-        </div>
       </form>
+      <div className={styles.filterMenu__actions}>
+        <button
+          type="submit"
+          className={styles.filterMenu__searchBtn}
+          onClick={handleSearch}
+        >
+          Show results
+        </button>
+        <button
+          onClick={clearFilters}
+          className={styles.filterMenu__clearFilters}
+        >
+          Clear filter
+        </button>
+      </div>
     </div>
   );
 };

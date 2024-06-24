@@ -1,7 +1,9 @@
 .movies {
+  height: 100%;
   width: calc(100% - 313px);
   padding-bottom: 35px;
   &__wrapper {
+    height: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(266px, 1fr));
     gap: 31px;

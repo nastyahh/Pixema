@@ -6,12 +6,10 @@ export const getMovieInfo = createAsyncThunk(
     imdbID,
     genre,
     rating,
-    country,
   }: {
     imdbID: string;
     genre: string;
     rating: string;
-    country: string;
   }) => {
     const response = await fetch(
       `https://www.omdbapi.com/?apikey=2c09a177&i=${imdbID}`
@@ -33,14 +31,7 @@ export const searchByFilters = createAsyncThunk(
       year,
       genre,
       rating,
-      country,
-    }: {
-      title: string;
-      year: string;
-      genre: string;
-      rating: string;
-      country: string;
-    },
+    }: { title: string; year: string; genre: string; rating: string },
     { rejectWithValue, dispatch }
   ) => {
     const responce = await fetch(
@@ -59,7 +50,7 @@ export const searchByFilters = createAsyncThunk(
     await Promise.all(
       movies.map(async (movie) => {
         const infoResponse = await dispatch(
-          getMovieInfo({ imdbID: movie.imdbID, genre, rating, country })
+          getMovieInfo({ imdbID: movie.imdbID, genre, rating })
         );
         return infoResponse.payload;
       })
@@ -84,17 +75,6 @@ export const searchMovies = createAsyncThunk(
   }
 );
 
-const meetsSearchCriteria = (movie, searchParams) => {
-  return (
-    (!searchParams.genre || movie.Genre.includes(searchParams.genre)) &&
-    (!searchParams.minRating ||
-      parseFloat(movie.imdbRating) >= parseFloat(searchParams.minRating)) &&
-    (!searchParams.maxRating ||
-      parseFloat(movie.imdbRating) <= parseFloat(searchParams.maxRating)) &&
-    (!searchParams.country || movie.Country.includes(searchParams.country))
-  );
-};
-
 const searchSlice = createSlice({
   name: "search",
   initialState: {
@@ -102,6 +82,7 @@ const searchSlice = createSlice({
     searchByFilters: [],
     searchFull: [],
     status: "",
+    error: null,
   },
   reducers: {
     setSearchMovie: (state, action) => {
@@ -125,36 +106,22 @@ const searchSlice = createSlice({
       })
       .addCase(getMovieInfo.fulfilled, (state, action) => {
         const movie = action.payload;
-        const searchParams = action.meta.arg;
-
-        // Проверка соответствия фильма критериям поиска
-        const meetsCriteria = meetsSearchCriteria(movie, searchParams);
-
-        // Проверка наличия фильма в результате поиска и его отсутствия в уже найденных фильмах
+        const ratingRange = action.meta.arg.rating.split("-");
+        const minRating = parseFloat(ratingRange[0]);
+        const maxRating = parseFloat(ratingRange[1]);
+        const movieRating = parseFloat(movie.imdbRating);
         if (
-          meetsCriteria &&
-          !state.searchFull.find((item) => item.imdbID === movie.imdbID)
+          ((action.meta.arg.genre === undefined ||
+            action.meta.arg.genre === "") &&
+            (minRating === NaN || movieRating >= minRating) &&
+            (maxRating === NaN || movieRating <= maxRating)) ||
+          (movie.Genre.includes(action.meta.arg.genre) &&
+            movieRating >= minRating &&
+            movieRating <= maxRating &&
+            !state.searchFull.find((item) => item.imdbID === movie.imdbID))
         ) {
           state.searchFull.push(movie);
         }
-        // const movie = action.payload;
-        // const ratingRange = action.meta.arg.rating.split("-");
-        // const minRating = parseFloat(ratingRange[0]);
-        // const maxRating = parseFloat(ratingRange[1]);
-        // const movieRating = parseFloat(movie.imdbRating);
-        // if (
-        //   ((action.meta.arg.genre === undefined ||
-        //     action.meta.arg.genre === "") &&
-        //     (minRating === NaN || movieRating >= minRating) &&
-        //     (maxRating === NaN || movieRating <= maxRating)) ||
-        //   (movie.Genre.includes(action.meta.arg.genre) &&
-        //     movieRating >= minRating &&
-        //     movieRating <= maxRating &&
-        //     movie.Country.includes(action.meta.arg.country) &&
-        //     !state.searchFull.find((item) => item.imdbID === movie.imdbID))
-        // ) {
-        //   state.searchFull.push(movie);
-        // }
       });
   },
 });

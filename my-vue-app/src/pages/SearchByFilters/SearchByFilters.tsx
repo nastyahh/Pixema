@@ -1,28 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
 import styles from "./SearchByFilters.module.scss";
-import { useEffect } from "react";
-import { getMovieInfo } from "../../store/searchSlice";
 import FilteredMovies from "../../ui-components/FilteredMovies/FilteredMovies";
+import { useSelector } from "react-redux";
 
 const SearchByFilters = () => {
   const searchResults = useSelector((state) => state.search.searchByFilters);
-
+  const error = useSelector((state) => state.search.error);
   const searchFull = useSelector((state) => state.search.searchFull);
-
-  //   const dispatch = useDispatch();
-
-  //   useEffect(() => {
-  //     searchResults.forEach((movie) => {
-  //       dispatch(getMovieInfo(movie.imdbID));
-  //     });
-  //   }, []);
 
   console.log("searchByFilters:", searchResults);
   console.log("searchFull:", searchFull);
 
   return (
     <>
-      {searchResults === "Movie not found!" ? (
+      {error ? (
         "Movies not found"
       ) : (
         <div className={styles.search__wrapper}>

@@ -5,10 +5,9 @@ export const fetchMovies = createAsyncThunk(
   async (page) => {
     console.log(page);
     const responce = await fetch(
-      `https://www.omdbapi.com/?apikey=2c09a177&s=movie&page=${page}`
+      `https://www.omdbapi.com/?apikey=2c09a177&s=kitty&page=${page}`
     );
     const data = await responce.json();
-    // console.log(data);
     return data;
   }
 );
@@ -36,5 +35,4 @@ const paginationSlice = createSlice({
   },
 });
 
-// export const { fetchMovies } = paginationSlice.actions;
 export default paginationSlice.reducer;

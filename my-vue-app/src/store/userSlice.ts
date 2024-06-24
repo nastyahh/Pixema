@@ -65,8 +65,6 @@ export const getUser = createAsyncThunk(
       const data = await responce.json();
 
       localStorage.setItem("Login", JSON.stringify(data));
-      //   console.log("Access Token:", localStorage.getItem("access_token"));
-      //   console.log("Refresh Token:", localStorage.getItem("refresh_token"));
       dispatch(toggleIsLogged(true));
       return data;
     } catch (error) {
@@ -80,7 +78,7 @@ export const getUserProfile = createAsyncThunk(
   async (_, { rejectWithValue, dispatch }) => {
     try {
       const { access } = JSON.parse(localStorage.getItem("Login") as string);
-      //   console.log(access);
+
       const responce = await fetch(
         "https://studapi.teachmeskills.by/auth/users/me/",
         {
@@ -96,7 +94,7 @@ export const getUserProfile = createAsyncThunk(
       }
 
       const data = await responce.json();
-      console.log(data);
+      //   console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue((error as Error).message);
@@ -149,7 +147,7 @@ export const refreshToken = createAsyncThunk(
         }
       );
       const data = await responce.json();
-      //   console.log(data);
+
       localStorage.setItem(
         "Login",
         JSON.stringify({ refresh: refresh, access: data.access })

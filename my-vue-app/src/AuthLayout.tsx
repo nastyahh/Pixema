@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ActiveContext, ThemeContext } from "./Context/context";
+import { ActiveContext } from "./Context/context";
 import AuthProvider from "./HOC/AuthProvider";
 import { Outlet } from "react-router-dom";
 import { ReactComponent as Logo } from "./assets/pixemaLogo.svg";

@@ -41,3 +41,50 @@ export interface SearchQuery {
   maxRating: string;
   country: string;
 }
+
+export interface MovieInfo {
+  imdbID: string;
+  Title: string;
+  Poster: string;
+  Genre: string;
+  imdbRating: string;
+  Runtime: string;
+  Plot: string;
+  Year: string;
+  Released: string;
+  BoxOffice: string;
+  Country: string;
+  Production: string;
+  Actors: string;
+  Director: string;
+  Writer: string;
+}
+
+export interface State {
+  user: {
+    isLogged: boolean;
+    profile: {
+      id: number;
+      username: string;
+      email: string;
+    } | null;
+  };
+  movies: {
+    movies: [];
+    movieInfo: MovieInfo | null;
+    movieInfos: [];
+    status: string | null;
+    movieInfoStatus: string | null;
+  };
+  pagination: {
+    movies: [];
+    currentPage: number;
+    status: string | null;
+  };
+  search: {
+    searchMovies: [];
+    searchByFilters: [];
+    searchFull: [];
+    status: string;
+  };
+}

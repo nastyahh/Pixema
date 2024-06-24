@@ -6,7 +6,11 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar/NavBar";
 import "./App.css";
 import { useDispatch } from "react-redux";
-import { refreshToken } from "./store/userSlice";
+import {
+  getUserProfile,
+  refreshToken,
+  toggleIsLogged,
+} from "./store/userSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import { FilterMenuProvider } from "./HOC/FilterMenuProvider";
 import FilterMenu from "./components/FilterMenu/FilterMenu";
@@ -27,15 +31,26 @@ const Layout = () => {
       setIsDark(theme === "true");
     }
 
-    const refreshTokenInterval = setInterval(async () => {
-      try {
-        await dispatch(refreshToken());
-      } catch (error) {
-        console.error("Error refreshing token:", error);
+    const initAuth = async () => {
+      const storedLogin = localStorage.getItem("Login");
+      if (storedLogin) {
+        try {
+          await dispatch(getUserProfile());
+          dispatch(toggleIsLogged(true));
+        } catch (error) {
+          console.error("Error getting user profile:", error);
+          try {
+            await dispatch(refreshToken());
+          } catch (refreshError) {
+            console.error("Error refreshing token:", refreshError);
+            localStorage.removeItem("Login");
+            dispatch(toggleIsLogged(false));
+          }
+        }
       }
-    }, 5 * 60 * 1000);
+    };
 
-    return () => clearInterval(refreshTokenInterval);
+    initAuth();
   }, []);
 
   return (
