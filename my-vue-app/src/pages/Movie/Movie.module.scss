@@ -1,6 +1,11 @@
 .movie {
   display: flex;
   gap: 42px;
+  &Info {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+  }
   &__wrapper {
     position: relative;
     display: flex;
@@ -19,9 +24,19 @@
     width: 256px;
   }
   &__details {
-    width: 530px;
+    max-width: 530px;
+    margin-bottom: 56px;
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
+    gap: 75px;
+  }
+  &__details li {
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  &__details__characteristics li {
+    font-weight: 600;
+    color: #afb2b6;
   }
   &__poster {
     width: 100%;
@@ -47,6 +62,7 @@
     margin-bottom: 24px;
   }
   &__plot {
+    margin-bottom: 40px;
   }
   &__rating__number,
   &__rating__imdb,
@@ -78,8 +94,27 @@
     padding: 20px 48px;
     background-color: #323537;
     border-radius: 0;
+    transition: background-color 0.2s linear;
+  }
+  &__preview__actions button:hover svg circle,
+  &__preview__actions button:hover svg path {
+    stroke: #c5add5;
+    fill: #c5add5;
+  }
+  &__preview__actions button:hover {
+    background-color: #272a2b;
+  }
+  &__preview__actions button:active {
+    background-color: #1d1f20;
+  }
+  &__recommend {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 36px;
+    margin-bottom: 40px;
   }
 }
+
 .shareMessage {
   position: absolute;
   left: 50%;
@@ -125,10 +160,33 @@
 }
 
 .carousel {
-  width: 1000px;
+  width: 1205px;
+  margin-left: auto;
   overflow: hidden;
 }
 .owl-item.active,
 .owl-item {
   width: 300px;
+}
+.owl {
+  &Btn:hover svg path,
+  &Btn:active svg path {
+    fill: #fff;
+  }
+  &Btn svg path {
+    transition: fill 0.15s linear;
+  }
+}
+.owlNextSlide {
+  transform: rotate(180deg);
+}
+
+.customNavBtn:hover svg path {
+  fill: #fff;
+}
+.owl-carousel .owl-nav button.owl-next {
+  transform: rotate(180deg);
+}
+.owl-theme .owl-nav {
+  position: absolute;
 }

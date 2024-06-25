@@ -8,7 +8,6 @@
 
 .navbar {
   width: 313px;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -35,5 +34,8 @@
     &_nonActive {
       color: #80858b;
     }
+  }
+  &__copyright {
+    margin-top: auto;
   }
 }
