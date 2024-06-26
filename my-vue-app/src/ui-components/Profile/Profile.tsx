@@ -51,18 +51,18 @@ const Profile = () => {
       <button onClick={logOut}>logOut</button>
     </div>
   ) : (
-    <div className={styles.user}>
+    <button onClick={() => navigate("/sign-in")} className={styles.user}>
       <div className={styles.user__avatar}>
         <SignIn />
       </div>
       <div className={styles.user__name}>
         <span>Sign In</span>
       </div>
-      <button onClick={() => navigate("/sign-in")}>
+      <button className={styles.arrowRight}>
         <ArrowRight />
       </button>
       <div className={styles.user__menu}></div>
-    </div>
+    </button>
   );
 };
 

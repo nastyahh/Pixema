@@ -12,9 +12,12 @@ input {
 input:not(:last-of-type) {
   margin-bottom: 24px;
 }
+input[type="password"] {
+  margin-bottom: 10px;
+}
 
 .signIn__wrapper {
-  min-height: 100vh;
+  min-height: 100%;
   background: url("./assets/sign-in-frame.png") center no-repeat;
   background-size: cover;
   display: flex;
@@ -23,7 +26,7 @@ input:not(:last-of-type) {
 
 .signIn {
   width: 574px;
-  margin: 0 auto;
+  margin: 0 auto 60px;
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -44,5 +47,8 @@ input:not(:last-of-type) {
   }
   &__registration {
     text-align: center;
+  }
+  &__registrationLink {
+    color: #7b61ff;
   }
 }

@@ -14,4 +14,17 @@
     display: flex;
     gap: 5px;
   }
+  &:hover &__name {
+    color: #7b61ff;
+  }
+  &:hover &__avatar {
+    background-color: #917bfc;
+  }
+  &:hover &__avatar svg path,
+  &:hover .arrowRight svg path {
+    fill: #7b61ff;
+  }
+  &:hover &__avatar svg path {
+    stroke: #000;
+  }
 }

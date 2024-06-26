@@ -43,6 +43,9 @@ body {
   display: flex;
   flex-direction: column;
 }
+.auth-container {
+  padding: 0 65px;
+}
 
 header {
   padding: 60px 0;

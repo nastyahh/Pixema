@@ -14,12 +14,14 @@ const AuthLayout = () => {
         value={{ isActive: isActive, setIsActive: setIsactive }}
       >
         <AuthProvider>
-          <header className="auth-header">
-            <div>
-              <Logo />
-            </div>
-          </header>
-          <Outlet />
+          <div className="auth-container">
+            <header className="auth-header">
+              <div>
+                <Logo />
+              </div>
+            </header>
+            <Outlet />
+          </div>
           <footer className="auth-footer">© All Rights Reserved</footer>
         </AuthProvider>
       </ActiveContext.Provider>

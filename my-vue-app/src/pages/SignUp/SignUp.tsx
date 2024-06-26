@@ -16,6 +16,7 @@ const SignUp = () => {
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
   const navigate = useNavigate();
   const location = useLocation();
+  const status = useSelector((state) => state.user.status);
 
   const fromPage =
     (location.state && location.state.from && location.state.from.pathname) ||
@@ -31,21 +32,12 @@ const SignUp = () => {
 
   const handleSignUp = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(createUser(userSignUp)).then((result) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        dispatch(
-          getUser({ email: userSignUp.email, password: userSignUp.password })
-        ).then((login) => {
-          if (login.meta.requestStatus === "fulfilled") {
-            dispatch(getUserProfile()).then((profileResult) => {
-              if (profileResult.meta.requestStatus === "fulfilled") {
-                navigate(fromPage);
-              }
-            });
-          }
-        });
-      }
-    });
+    dispatch(
+      createUser({
+        signUpObj: userSignUp,
+        callback: () => navigate("/confirmation"),
+      })
+    );
   };
 
   return (
@@ -79,7 +71,11 @@ const SignUp = () => {
         Sign up
       </button>
       <p className={styles.signIn__registration}>
-        Already have an account?<Link to="/sign-in"> Sign In</Link>
+        Already have an account?
+        <Link to="/sign-in" className={styles.signIn__registrationLink}>
+          {" "}
+          Sign In
+        </Link>
       </p>
     </form>
   );

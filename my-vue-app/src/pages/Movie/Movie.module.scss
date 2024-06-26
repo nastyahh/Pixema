@@ -164,29 +164,18 @@
   margin-left: auto;
   overflow: hidden;
 }
-.owl-item.active,
-.owl-item {
-  width: 300px;
-}
-.owl {
-  &Btn:hover svg path,
-  &Btn:active svg path {
+.customNavBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &:hover svg path {
     fill: #fff;
   }
-  &Btn svg path {
-    transition: fill 0.15s linear;
+  &:active {
+    background: none;
   }
-}
-.owlNextSlide {
-  transform: rotate(180deg);
-}
-
-.customNavBtn:hover svg path {
-  fill: #fff;
-}
-.owl-carousel .owl-nav button.owl-next {
-  transform: rotate(180deg);
-}
-.owl-theme .owl-nav {
-  position: absolute;
+  &.owlNextSlide {
+    transform: rotate(360deg);
+  }
 }

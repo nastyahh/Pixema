@@ -12,6 +12,7 @@ import Trends from "./pages/Trends/Trends";
 import Auth from "./HOC/Auth";
 import Settings from "./pages/Settings/Settings";
 import SearchByFilters from "./pages/SearchByFilters/SearchByFilters";
+import Confirmation from "./pages/Confirmation/Confirmation";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="trends" element={<Trends />} />
         <Route path="settings" element={<Settings />} />
         <Route path="search-by-filters" element={<SearchByFilters />} />
+        <Route path="/confirmation" element={<Confirmation />} />
       </Route>
       <Route element={<AuthLayout />}>
         {" "}

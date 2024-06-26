@@ -4,11 +4,17 @@ import { ActivateUser } from "../utility/types";
 export const createUser = createAsyncThunk(
   "user/createUser",
   async (
-    signUpObj: {
-      username: string;
-      email: string;
-      password: string;
-      course_group: number;
+    {
+      signUpObj,
+      callback,
+    }: {
+      signUpObj: {
+        username: string;
+        email: string;
+        password: string;
+        course_group: number;
+      };
+      callback: () => void;
     },
     { rejectWithValue, dispatch }
   ) => {
@@ -30,6 +36,7 @@ export const createUser = createAsyncThunk(
       }
       const data = await responce.json();
       dispatch(addUser(data));
+      callback();
       return data;
     } catch (error) {
       return rejectWithValue((error as Error).message);
@@ -94,7 +101,6 @@ export const getUserProfile = createAsyncThunk(
       }
 
       const data = await responce.json();
-      //   console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue((error as Error).message);
