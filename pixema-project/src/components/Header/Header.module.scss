@@ -1,0 +1,27 @@
+.header {
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__logo {
+    margin-right: 140px;
+  }
+  &__search {
+    position: relative;
+    width: 1184px;
+  }
+  &__search__input {
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 10px;
+    background-color: #323537;
+  }
+  &__search__filter {
+    position: absolute;
+    top: 50%;
+    right: 0;
+
+    transform: translateY(-50%);
+  }
+}

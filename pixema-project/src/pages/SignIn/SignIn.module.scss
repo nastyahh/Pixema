@@ -1,0 +1,54 @@
+label {
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 10px;
+  background-color: #323537;
+}
+
+input:not(:last-of-type) {
+  margin-bottom: 24px;
+}
+input[type="password"] {
+  margin-bottom: 10px;
+}
+
+.signIn__wrapper {
+  min-height: 100%;
+  background: url("./assets/sign-in-frame.png") center no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+
+.signIn {
+  width: 574px;
+  margin: 0 auto 60px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  background-color: #242426;
+  border-radius: 10px;
+  &__title {
+    font-size: 24px;
+    line-height: 36px;
+    margin-bottom: 40px;
+  }
+  &__forgot {
+    color: #80858b;
+  }
+  &__btn {
+    width: 100%;
+    margin: 40px 0 32px;
+    background-color: #7b61ff;
+  }
+  &__registration {
+    text-align: center;
+  }
+  &__registrationLink {
+    color: #7b61ff;
+  }
+}

@@ -1,0 +1,60 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-size: 16px;
+  line-height: 24px;
+  background-color: #000;
+}
+
+#root {
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.app {
+  min-height: 100vh;
+}
+.app.light {
+  background: #c5add5;
+  color: #000;
+}
+.app.dark {
+  background: #1b0124;
+}
+
+.container {
+  max-width: 1826px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.main {
+  display: flex;
+}
+
+.auth-layout {
+  min-height: 100vh;
+  background: url("./assets/sign-in-frame.png") center no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+.auth-container {
+  padding: 0 65px;
+}
+
+header {
+  padding: 60px 0;
+}
+
+.auth-footer {
+  position: absolute;
+  width: 100%;
+  height: 25px;
+  bottom: 25px;
+  text-align: center;
+}
