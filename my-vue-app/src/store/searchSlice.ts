@@ -110,18 +110,18 @@ const searchSlice = createSlice({
         const minRating = parseFloat(ratingRange[0]);
         const maxRating = parseFloat(ratingRange[1]);
         const movieRating = parseFloat(movie.imdbRating);
-        if (
-          ((action.meta.arg.genre === undefined ||
-            action.meta.arg.genre === "") &&
-            (minRating === NaN || movieRating >= minRating) &&
-            (maxRating === NaN || movieRating <= maxRating)) ||
-          (movie.Genre.includes(action.meta.arg.genre) &&
-            movieRating >= minRating &&
-            movieRating <= maxRating &&
-            !state.searchFull.find((item) => item.imdbID === movie.imdbID))
-        ) {
-          state.searchFull.push(movie);
-        }
+        // if (
+        //   ((action.meta.arg.genre === undefined ||
+        //     action.meta.arg.genre === "") &&
+        //     (minRating === NaN || movieRating >= minRating) &&
+        //     (maxRating === NaN || movieRating <= maxRating)) ||
+        //   (movie.Genre.includes(action.meta.arg.genre) &&
+        //     movieRating >= minRating &&
+        //     movieRating <= maxRating &&
+        //     !state.searchFull.find((item) => item.imdbID === movie.imdbID))
+        // ) {
+        //   state.searchFull.push(movie);
+        // }
       });
   },
 });

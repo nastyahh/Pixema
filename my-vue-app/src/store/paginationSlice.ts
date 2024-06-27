@@ -5,7 +5,7 @@ export const fetchMovies = createAsyncThunk(
   async (page) => {
     console.log(page);
     const responce = await fetch(
-      `https://www.omdbapi.com/?apikey=2c09a177&s=kitty&page=${page}`
+      `https://www.omdbapi.com/?apikey=2c09a177&s=batman&page=${page}`
     );
     const data = await responce.json();
     return data;

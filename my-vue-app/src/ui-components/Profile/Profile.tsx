@@ -1,11 +1,11 @@
 import styles from "./Profile.module.scss";
-import { ReactComponent as ArrowBottom } from "../../assets/profileArrow.svg";
+import { ReactComponent as ArrowBottom } from "../../assets/arrow-bottom.svg";
 import { ReactComponent as ArrowRight } from "../../assets/arrowRight.svg";
 import { ReactComponent as SignIn } from "../../assets/profile.svg";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { getUserProfile, toggleIsLogged } from "../../store/userSlice";
+import { useState } from "react";
+import { toggleIsLogged } from "../../store/userSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import { State } from "../../utility/types";
 
@@ -13,8 +13,13 @@ const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
   const isLogged = useSelector((state: State) => state.user.isLogged);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const user = useSelector((state: State) => state.user.profile);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
   const getInitials = (username: string) => {
     if (!username) return "";
@@ -30,25 +35,33 @@ const Profile = () => {
     localStorage.removeItem("Login");
   };
 
-  // useEffect(() => {
-  //   if (isLogged) {
-  //     dispatch(getUserProfile());
-  //   }
-  // }, [isLogged]);
-
   return isLogged ? (
-    <div className={styles.user}>
-      <div className={styles.user__avatar}>
-        {user ? getInitials(user.username) : "loading"}
-      </div>
-      <div className={styles.user__name}>
-        <span>{user ? user.username : "loading"}</span>
+    <div className={styles.user} onClick={toggleMenu}>
+      <div className={styles.user__profile}>
+        <div className={styles.user__avatar}>
+          {user ? getInitials(user.username) : "loading"}
+        </div>
+        <div className={styles.user__name}>
+          <span>{user ? user.username : "loading"}</span>
+        </div>
       </div>
       <button>
-        <ArrowBottom />
+        <ArrowBottom className={styles.user__btnBottom} />
       </button>
-      <div className={styles.user__menu}></div>
-      <button onClick={logOut}>logOut</button>
+      <div
+        className={`${styles.user__menu} ${menuOpen ? styles.open : ""}`}
+        onMouseOver={() => setMenuOpen(true)}
+        onMouseOut={() => setMenuOpen(false)}
+      >
+        <div className={styles.user__menu__edit}>
+          <Link to="/settings" className={styles.user__menuLink}>
+            Edit profile
+          </Link>
+        </div>
+        <button onClick={logOut} className={styles.user__logOut}>
+          Log Out
+        </button>
+      </div>
     </div>
   ) : (
     <button onClick={() => navigate("/sign-in")} className={styles.user}>

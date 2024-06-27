@@ -1,8 +1,9 @@
 .header {
   &__container {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
     align-items: center;
+    padding: 0;
   }
   &__logo {
     margin-right: 140px;
@@ -10,18 +11,22 @@
   &__search {
     position: relative;
     width: 1184px;
+    margin-right: 41px;
   }
   &__search__input {
     width: 100%;
     padding: 16px 20px;
+    font-size: 21px;
     border-radius: 10px;
     background-color: #323537;
+    &::placeholder {
+      font-size: 16px;
+    }
   }
   &__search__filter {
     position: absolute;
     top: 50%;
     right: 0;
-
     transform: translateY(-50%);
   }
 }

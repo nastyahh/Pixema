@@ -35,7 +35,7 @@ const Home = () => {
   //     fetchMoviesWithInfo();
   //   }, []);
   useEffect(() => {
-    dispatch(clearMovies());
+    // dispatch(clearMovies());
     dispatch(getMovies());
   }, []);
   useEffect(() => {

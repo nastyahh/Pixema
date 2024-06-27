@@ -5,7 +5,7 @@ export const getMovies = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const responce = await fetch(
-        "https://www.omdbapi.com/?apikey=2c09a177&s=kitty"
+        "https://www.omdbapi.com/?apikey=2c09a177&s=batman"
       );
       if (!responce.ok) {
         throw new Error("Error fetching movies");
@@ -24,7 +24,7 @@ export const fetchRecommendedMovies = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        "https://www.omdbapi.com/?apikey=2c09a177&s=kitty"
+        "https://www.omdbapi.com/?apikey=2c09a177&s=batman"
       );
       if (!response.ok) {
         throw new Error("Error fetching movies");

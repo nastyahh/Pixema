@@ -1,18 +1,26 @@
 .user {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 17px 30px;
   font-size: 16px;
   color: #fff;
+  cursor: pointer;
   &__avatar {
-    padding: 10px;
-    border-radius: 3px;
+    padding: 16px;
+    border-radius: 10px;
     background-color: #7b61ff;
   }
   &__name {
     display: flex;
-    gap: 5px;
+  }
+  &__profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  &__logOut {
+    width: 100%;
   }
   &:hover &__name {
     color: #7b61ff;
@@ -26,5 +34,48 @@
   }
   &:hover &__avatar svg path {
     stroke: #000;
+  }
+  &__btnBottom {
+    width: 24px;
+    height: 24px;
+  }
+  &__menu {
+    display: none;
+    width: 100%;
+    position: absolute;
+    bottom: -250%;
+    z-index: 30;
+    border-radius: 10px;
+    overflow: hidden;
+    &__edit,
+    .user__logOut {
+      padding: 17px 20px 15px;
+      background: #242426;
+      border-radius: 0;
+      border: none;
+      text-align: left;
+      font-weight: 500;
+      line-height: 24px;
+      cursor: pointer;
+    }
+    &__edit {
+      border-bottom: 1px solid #323537;
+    }
+    &Link {
+      color: #fff;
+      &:hover {
+        color: #cecece;
+      }
+    }
+  }
+  &__logOut {
+    color: #7b61ff;
+    &:hover {
+      color: #a18ffe;
+    }
+  }
+  &__menu.open {
+    display: flex;
+    flex-direction: column;
   }
 }
