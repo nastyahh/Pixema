@@ -26,8 +26,7 @@ const SignIn = () => {
   const fromPage =
     (location.state && location.state.from && location.state.from.pathname) ||
     "/";
-  console.log(fromPage);
-  console.log(location);
+
   const handleSignIn = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(getUser(userLogin)).then((result) => {

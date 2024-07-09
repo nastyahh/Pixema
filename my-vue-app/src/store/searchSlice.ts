@@ -4,12 +4,14 @@ export const getMovieInfo = createAsyncThunk(
   "movies/getMovieInfo",
   async ({
     imdbID,
-    genre,
+    genres,
     rating,
+    country,
   }: {
     imdbID: string;
-    genre: string;
-    rating: string;
+    genres?: string[];
+    rating?: string;
+    country?: string;
   }) => {
     const response = await fetch(
       `https://www.omdbapi.com/?apikey=2c09a177&i=${imdbID}`
@@ -29,9 +31,16 @@ export const searchByFilters = createAsyncThunk(
     {
       title,
       year,
-      genre,
+      genres,
       rating,
-    }: { title: string; year: string; genre: string; rating: string },
+      country,
+    }: {
+      title: string;
+      year: string;
+      genres?: string[];
+      rating?: string;
+      country?: string;
+    },
     { rejectWithValue, dispatch }
   ) => {
     const responce = await fetch(
@@ -50,7 +59,7 @@ export const searchByFilters = createAsyncThunk(
     await Promise.all(
       movies.map(async (movie) => {
         const infoResponse = await dispatch(
-          getMovieInfo({ imdbID: movie.imdbID, genre, rating })
+          getMovieInfo({ imdbID: movie.imdbID, genres, rating, country })
         );
         return infoResponse.payload;
       })
@@ -62,7 +71,7 @@ export const searchByFilters = createAsyncThunk(
 
 export const searchMovies = createAsyncThunk(
   "search/searchMovies",
-  async (str: string) => {
+  async (str: string, { dispatch }) => {
     const responce = await fetch(
       `https://www.omdbapi.com/?apikey=2c09a177&s=${str}`
     );
@@ -80,9 +89,11 @@ const searchSlice = createSlice({
   initialState: {
     searchMovies: [],
     searchByFilters: [],
+    searchFullStatus: null as null | "loading" | "fulfilled" | "rejected",
     searchFull: [],
     status: "",
     error: null,
+    filtersIsApplied: false,
   },
   reducers: {
     setSearchMovie: (state, action) => {
@@ -100,28 +111,50 @@ const searchSlice = createSlice({
       .addCase(searchMovies.fulfilled, (state, action) => {
         state.status = "fulfilled";
         state.searchMovies = action.payload;
+        // state.searchMovies.map((movie)=>{})
+      })
+      .addCase(searchByFilters.pending, (state) => {
+        state.searchFull = [];
       })
       .addCase(searchByFilters.fulfilled, (state, action) => {
         state.searchByFilters = action.payload;
+        state.filtersIsApplied = true;
+      })
+      .addCase(getMovieInfo.pending, (state) => {
+        state.searchFullStatus = "loading";
       })
       .addCase(getMovieInfo.fulfilled, (state, action) => {
+        state.searchFullStatus = "fulfilled";
         const movie = action.payload;
         const ratingRange = action.meta.arg.rating.split("-");
         const minRating = parseFloat(ratingRange[0]);
         const maxRating = parseFloat(ratingRange[1]);
         const movieRating = parseFloat(movie.imdbRating);
-        // if (
-        //   ((action.meta.arg.genre === undefined ||
-        //     action.meta.arg.genre === "") &&
-        //     (minRating === NaN || movieRating >= minRating) &&
-        //     (maxRating === NaN || movieRating <= maxRating)) ||
-        //   (movie.Genre.includes(action.meta.arg.genre) &&
-        //     movieRating >= minRating &&
-        //     movieRating <= maxRating &&
-        //     !state.searchFull.find((item) => item.imdbID === movie.imdbID))
-        // ) {
-        //   state.searchFull.push(movie);
-        // }
+
+        const matchesGenres =
+          !action.meta.arg.genres.length ||
+          action.meta.arg.genres.every((genre) => movie.Genre.includes(genre));
+
+        const matchesRating =
+          (isNaN(minRating) && isNaN(maxRating)) ||
+          ratingRange.length === 1 ||
+          (!isNaN(minRating) &&
+            movieRating >= minRating &&
+            !isNaN(maxRating) &&
+            movieRating <= maxRating);
+
+        const matchesCountry =
+          !action.meta.arg.country ||
+          movie.Country.includes(action.meta.arg.country);
+
+        if (
+          matchesGenres &&
+          matchesRating &&
+          matchesCountry &&
+          !state.searchFull.find((item) => item.imdbID === movie.imdbID)
+        ) {
+          state.searchFull.push(movie);
+        }
       });
   },
 });

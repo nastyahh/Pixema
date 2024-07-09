@@ -5,6 +5,11 @@
     left: 0;
   }
 }
+@mixin icon-hover($color) {
+  &:active::before {
+    filter: brightness(0) invert(0) sepia(1) saturate(10000%) hue-rotate(180deg); // Пример для черного цвета
+  }
+}
 
 .navbar {
   width: 300px;
@@ -18,6 +23,7 @@
     padding-left: 41px;
     &:nth-child(1) {
       @include icon-before("../../assets/navbar/home-icon.svg");
+      @include icon-hover("#000");
     }
     &:nth-child(2) {
       @include icon-before("../../assets/navbar/trends-icon.svg");

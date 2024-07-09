@@ -6,6 +6,10 @@ input {
   padding: 16px 20px;
   font-size: 18px;
   color: #e1dddd;
+  border: 1px solid transparent;
+  &:focus {
+    background: #3f4245;
+  }
 }
 
 .filterMenu {
@@ -17,6 +21,7 @@ input {
   height: 100%;
   background-color: #242426;
   color: #fff;
+  z-index: 100;
   &__title {
     font-size: 24px;
     font-weight: 600;
@@ -52,4 +57,18 @@ input {
 
 form {
   margin-bottom: 110px;
+}
+.invalid__input {
+  border: 1px solid #ff339e;
+}
+.invalidWrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+.invalid__message {
+  position: absolute;
+  bottom: -25px;
+  left: 5px;
+  font-size: 13px;
+  color: #624dca;
 }

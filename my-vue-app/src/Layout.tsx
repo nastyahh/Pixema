@@ -47,6 +47,8 @@ const Layout = () => {
             dispatch(toggleIsLogged(false));
           }
         }
+      } else {
+        dispatch(toggleIsLogged(false));
       }
     };
 

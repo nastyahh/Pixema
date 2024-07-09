@@ -5,7 +5,7 @@ import { ReactComponent as LogoLight } from "../../assets/logo-light.svg";
 import { ReactComponent as Filter } from "../../assets/filter.svg";
 import Profile from "../../ui-components/Profile/Profile";
 import { useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearSearchMovies, searchMovies } from "../../store/searchSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import { useFilterMenu } from "../../HOC/FilterMenuProvider";
@@ -17,6 +17,9 @@ const Header = () => {
   const [search, setSearch] = useState("");
   const { toggleFilterMenu } = useFilterMenu();
   const { isDark } = useContext(ThemeContext);
+  const filtersIsApplied = useSelector(
+    (state) => state.search.filtersIsApplied
+  );
 
   const debouncedSearch = useDebounce(search);
 
@@ -37,6 +40,8 @@ const Header = () => {
   };
 
   const isSearchByFiltersPage = location.pathname === "/search-by-filters";
+  const showFilterButton =
+    location.pathname === "/" || location.pathname === "/search-by-filters";
   const isAuthPage =
     location.pathname === "/sign-in" || location.pathname === "/sign-up";
 
@@ -57,12 +62,21 @@ const Header = () => {
                 className={styles.header__search__input}
                 disabled={isSearchByFiltersPage}
               />
-              <button
-                className={styles.header__search__filter}
-                onClick={toggleFilterMenu}
-              >
-                <Filter />
-              </button>
+              <div className={styles.header__search__filterWrap}>
+                <button
+                  className={styles.header__search__filter}
+                  onClick={() => {
+                    showFilterButton ? toggleFilterMenu() : null;
+                  }}
+                >
+                  <Filter />
+                  {filtersIsApplied ? (
+                    <span
+                      className={styles.header__search__filterIndicator}
+                    ></span>
+                  ) : null}
+                </button>
+              </div>
             </div>
             <Profile />
           </>

@@ -1,0 +1,15 @@
+export const options = [
+  { value: "Action", label: "Action" },
+  { value: "Drama", label: "Drama" },
+  { value: "Comedy", label: "Comedy" },
+  { value: "Thriller", label: "Thriller" },
+  { value: "Sci-fi", label: "Sci-fi" },
+  { value: "Adventure", label: "Adventure" },
+  { value: "Crime", label: "Crime" },
+  { value: "Animation", label: "Animation" },
+  { value: "Fantasy", label: "Fantasy" },
+  { value: "Mystery", label: "Mystery" },
+  { value: "Short", label: "Short" },
+  { value: "Documentary", label: "Documentary" },
+  { value: "Romance", label: "Romance" },
+];

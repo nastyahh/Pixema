@@ -32,7 +32,6 @@ export const fetchRecommendedMovies = createAsyncThunk(
       const data = await response.json();
       const movies = data.Search;
 
-      // Получаем подробную информацию для каждого фильма
       const movieDetails = await Promise.all(
         movies.map(async (movie) => {
           const detailsResponse = await fetch(
@@ -45,7 +44,6 @@ export const fetchRecommendedMovies = createAsyncThunk(
         })
       );
 
-      // Фильтруем фильмы по рейтингу
       const recommendedMovies = movieDetails.filter(
         (movie) => parseFloat(movie.imdbRating) > 7.0
       );

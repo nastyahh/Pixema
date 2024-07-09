@@ -5,8 +5,15 @@ const Movies = ({ data, movieInfos }) => {
   const moviesToRender = data.map(({ imdbID, Title, Poster }) => {
     // const movieInfo = movieInfos.find((info) => info.imdbID === imdbID) || {};
     let movieInfo = Array<{}>;
+    // console.log(data);
+    // console.log(movieInfos);
     if (Array.isArray(movieInfos)) {
-      movieInfo = movieInfos.find((info) => info.imdbID === imdbID) || {};
+      movieInfo =
+        movieInfos.find((info) => {
+          // console.log("info", info.imdbID);
+          // console.log(imdbID);
+          return info.imdbID === imdbID;
+        }) || {};
     }
     return (
       <div key={imdbID} className={styles.movies__item}>

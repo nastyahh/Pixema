@@ -1,26 +1,49 @@
 import { useFilterMenu } from "../../HOC/FilterMenuProvider";
 import styles from "./FilterMenu.module.scss";
+import "../../App.css";
 import { ReactComponent as CloseFilters } from "../../assets/close-filters.svg";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { clearSearchFull, searchByFilters } from "../../store/searchSlice";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { searchByFilters } from "../../store/searchSlice";
 import { useNavigate } from "react-router-dom";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
+import Select from "react-select";
+import countryList from "react-select-country-list";
+import { customStyles } from "./filterCustomStyles";
+import { options } from "./filterGenreOptions";
 
 const FilterMenu = () => {
   const { isFilterMenuOpen, toggleFilterMenu } = useFilterMenu();
+  const filterMenu = useRef(null);
 
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
   const navigate = useNavigate();
 
+  const countryOptions = countryList().getData();
+
+  const [titleValid, setTitleValid] = useState(true);
+  const [yearValid, setYearValid] = useState(true);
+
   const initialSearchQuery = {
     title: "",
     year: "",
-    genre: "",
+    genres: [],
     minRating: "",
     maxRating: "",
-    country: "",
+    country: [],
   };
+
+  const handleClick = (event: React.ChangeEvent<HTMLElement>) => {
+    if (filterMenu.current && !filterMenu.current.contains(event.target))
+      toggleFilterMenu();
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, []);
 
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
 
@@ -29,18 +52,50 @@ const FilterMenu = () => {
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setSearchQuery({ ...searchQuery, [name]: value });
-  };
 
+    if (name === "title") {
+      setTitleValid(!!value);
+    } else if (name === "year") {
+      setYearValid(!!value);
+    }
+  };
+  const handleSelectChange = (selectedOptions, name: string) => {
+    if (name === "country") {
+      setSearchQuery({
+        ...searchQuery,
+        [name]: selectedOptions
+          ? selectedOptions.map((option) => option.label)
+          : [],
+      });
+    } else {
+      setSearchQuery({
+        ...searchQuery,
+        [name]: selectedOptions
+          ? selectedOptions.map((option) => option.value)
+          : [],
+      });
+    }
+  };
   const handleSearch = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(
-      searchByFilters({
-        ...searchQuery,
-        rating: `${searchQuery.minRating}-${searchQuery.maxRating}`,
-      })
-    );
-    toggleFilterMenu();
-    navigate("/search-by-filters");
+
+    if (!searchQuery.title || !searchQuery.year) {
+      setTitleValid(!!searchQuery.title);
+      setYearValid(!!searchQuery.year);
+    } else {
+      const minRating = searchQuery.minRating ? searchQuery.minRating : "0";
+      const maxRating = searchQuery.maxRating ? searchQuery.maxRating : "10";
+
+      dispatch(
+        searchByFilters({
+          ...searchQuery,
+          rating: `${minRating}-${maxRating}`,
+        })
+      );
+      toggleFilterMenu();
+      navigate("/search-by-filters");
+      console.log(searchQuery);
+    }
   };
 
   const clearFilters = () => {
@@ -48,40 +103,73 @@ const FilterMenu = () => {
   };
 
   return (
-    <div className={styles.filterMenu}>
+    <div className={styles.filterMenu} ref={filterMenu}>
       <h1 className={styles.filterMenu__title}>Filters</h1>
       <button className={styles.closeBtn} onClick={toggleFilterMenu}>
         {" "}
         <CloseFilters />
       </button>
-      <form onSubmit={handleSearch}>
+      <form onSubmit={handleSearch} name="searchForm">
         <label htmlFor="">Full or short movie name</label>{" "}
-        <input
-          type="text"
-          name="title"
-          value={searchQuery.title}
-          onChange={handleInput}
-          placeholder="Your text"
-        />
+        <div className={styles.invalidWrapper}>
+          <input
+            type="text"
+            name="title"
+            value={searchQuery.title}
+            onChange={handleInput}
+            placeholder="Enter movie name..."
+            required
+            className={!titleValid ? styles.invalid__input : ""}
+          />
+          {titleValid ? (
+            ""
+          ) : (
+            <div className={styles.invalid__message}>
+              This field is required
+            </div>
+          )}
+        </div>
         <label htmlFor="">Year</label>{" "}
-        <input
-          type="text"
-          name="year"
-          value={searchQuery.year}
-          onChange={handleInput}
-        />
+        <div className={styles.invalidWrapper}>
+          <input
+            type="number"
+            name="year"
+            value={searchQuery.year}
+            onChange={handleInput}
+            placeholder="Enter year..."
+            required
+            className={!yearValid ? styles.invalid__input : ""}
+          />
+          {yearValid ? (
+            ""
+          ) : (
+            <div className={styles.invalid__message}>
+              This field is required
+            </div>
+          )}
+        </div>
         <label htmlFor="">Genre</label>{" "}
-        <input
-          type="text"
-          name="genre"
-          value={searchQuery.genre}
-          onChange={handleInput}
+        <Select
+          styles={customStyles}
+          isMulti
+          name="genres"
+          options={options}
+          className="basic-multi-select"
+          isSearchable
+          classNamePrefix="select"
+          onChange={(selectedOptions) => {
+            handleSelectChange(selectedOptions, "genres");
+          }}
+          value={searchQuery.genres.map((genre) => ({
+            value: genre,
+            label: genre,
+          }))}
         />
         <label htmlFor="">Rating</label>
         <div className={styles.filterMenu__inputWrapper}>
           <div>
             <input
-              type="text"
+              type="number"
               name="minRating"
               value={searchQuery.minRating}
               onChange={handleInput}
@@ -90,7 +178,7 @@ const FilterMenu = () => {
           </div>
           <div>
             <input
-              type="text"
+              type="number"
               name="maxRating"
               value={searchQuery.maxRating}
               onChange={handleInput}
@@ -99,14 +187,28 @@ const FilterMenu = () => {
           </div>
         </div>
         <label>Country</label>
-        <input
+        <Select
+          styles={customStyles}
+          isMulti
+          name="country"
+          options={countryOptions}
+          className="basic-multi-select"
+          isSearchable
+          onChange={(selectedOptions) => {
+            handleSelectChange(selectedOptions, "country");
+          }}
+          value={countryOptions.filter((option) =>
+            searchQuery.country.includes(option.label)
+          )}
+        />
+        {/* <input
           type="text"
           name="country"
           value={searchQuery.country}
           onChange={handleInput}
-          placeholder="Country"
-        />
-      </form>
+          placeholder="Country" */}
+        {/* /> */}
+      </form>{" "}
       <div className={styles.filterMenu__actions}>
         <button
           type="submit"

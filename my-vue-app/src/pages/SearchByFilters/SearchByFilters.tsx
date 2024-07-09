@@ -1,22 +1,32 @@
 import styles from "./SearchByFilters.module.scss";
 import FilteredMovies from "../../ui-components/FilteredMovies/FilteredMovies";
 import { useSelector } from "react-redux";
+import { ReactComponent as NotFound } from "../../assets/empty.svg";
+import Movies from "../../ui-components/Movies/Movies";
 
 const SearchByFilters = () => {
-  const searchResults = useSelector((state) => state.search.searchByFilters);
-  const error = useSelector((state) => state.search.error);
+  const searchByFilters = useSelector((state) => state.search.searchByFilters);
   const searchFull = useSelector((state) => state.search.searchFull);
+  const status = useSelector((state) => state.search.searchFullStatus);
 
-  console.log("searchByFilters:", searchResults);
+  console.log("searchByFilters:", searchByFilters);
   console.log("searchFull:", searchFull);
 
   return (
     <>
-      {error ? (
-        "Movies not found"
+      {status === "loading" ? (
+        <div className={styles.spinner__wrapper}>
+          <span className={styles.spinner}></span>
+        </div>
+      ) : searchFull.length === 0 ? (
+        <div className={styles.search__notFound}>
+          <NotFound className={styles.search__notFound__img} />
+          <div className={styles.search__notFound__text}>Movies not found</div>
+        </div>
       ) : (
         <div className={styles.search__wrapper}>
-          <FilteredMovies data={searchFull} />
+          {/* <FilteredMovies data={searchFull} /> */}
+          <Movies data={searchFull} movieInfos={searchFull} />
         </div>
       )}
     </>

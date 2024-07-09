@@ -197,6 +197,9 @@ const userSlice = createSlice({
       })
       .addCase(getUserProfile.fulfilled, (state, action) => {
         state.profile = action.payload;
+      })
+      .addCase(refreshToken.rejected, (state) => {
+        state.isLogged = false;
       });
   },
 });
