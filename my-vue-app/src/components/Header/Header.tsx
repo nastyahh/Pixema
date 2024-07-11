@@ -6,7 +6,11 @@ import { ReactComponent as Filter } from "../../assets/filter.svg";
 import Profile from "../../ui-components/Profile/Profile";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearSearchMovies, searchMovies } from "../../store/searchSlice";
+import {
+  clearSearchMovies,
+  searchMovies,
+  updateSearchQuery,
+} from "../../store/searchSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import { useFilterMenu } from "../../HOC/FilterMenuProvider";
 import { useLocation } from "react-router-dom";
@@ -27,6 +31,7 @@ const Header = () => {
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
 
   useEffect(() => {
+    dispatch(updateSearchQuery(debouncedSearch));
     dispatch(searchMovies(debouncedSearch));
   }, [debouncedSearch]);
 

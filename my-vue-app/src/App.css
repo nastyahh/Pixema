@@ -59,3 +59,19 @@ header {
   bottom: 25px;
   text-align: center;
 }
+.search__notFound {
+  width: 28%;
+  margin: 0 auto;
+  padding-top: 55px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.search__notFound__img {
+  margin-bottom: 20px;
+}
+.search__notFound__text {
+  text-align: center;
+  font-size: 22px;
+  color: #c5add5;
+}

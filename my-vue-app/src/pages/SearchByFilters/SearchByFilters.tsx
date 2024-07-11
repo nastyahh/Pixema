@@ -1,5 +1,5 @@
 import styles from "./SearchByFilters.module.scss";
-import FilteredMovies from "../../ui-components/FilteredMovies/FilteredMovies";
+import "../../App.css";
 import { useSelector } from "react-redux";
 import { ReactComponent as NotFound } from "../../assets/empty.svg";
 import Movies from "../../ui-components/Movies/Movies";
@@ -19,9 +19,9 @@ const SearchByFilters = () => {
           <span className={styles.spinner}></span>
         </div>
       ) : searchFull.length === 0 ? (
-        <div className={styles.search__notFound}>
-          <NotFound className={styles.search__notFound__img} />
-          <div className={styles.search__notFound__text}>Movies not found</div>
+        <div className="search__notFound">
+          <NotFound className="search__notFound__img" />
+          <div className="search__notFound__text">Movies not found</div>
         </div>
       ) : (
         <div className={styles.search__wrapper}>

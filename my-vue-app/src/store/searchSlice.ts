@@ -71,7 +71,7 @@ export const searchByFilters = createAsyncThunk(
 
 export const searchMovies = createAsyncThunk(
   "search/searchMovies",
-  async (str: string, { dispatch }) => {
+  async (str: string) => {
     const responce = await fetch(
       `https://www.omdbapi.com/?apikey=2c09a177&s=${str}`
     );
@@ -87,6 +87,7 @@ export const searchMovies = createAsyncThunk(
 const searchSlice = createSlice({
   name: "search",
   initialState: {
+    query: "",
     searchMovies: [],
     searchByFilters: [],
     searchFullStatus: null as null | "loading" | "fulfilled" | "rejected",
@@ -96,11 +97,15 @@ const searchSlice = createSlice({
     filtersIsApplied: false,
   },
   reducers: {
+    updateSearchQuery(state, action) {
+      state.query = action.payload; // Обновляем строку поиска
+    },
     setSearchMovie: (state, action) => {
       state.searchMovies = action.payload;
     },
     clearSearchMovies: (state) => {
       state.searchMovies = [];
+      state.query = "";
     },
     clearSearchFull: (state) => {
       state.searchFull = [];
@@ -108,10 +113,12 @@ const searchSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(searchMovies.pending, (state) => {
+        state.status = "loading";
+      })
       .addCase(searchMovies.fulfilled, (state, action) => {
         state.status = "fulfilled";
         state.searchMovies = action.payload;
-        // state.searchMovies.map((movie)=>{})
       })
       .addCase(searchByFilters.pending, (state) => {
         state.searchFull = [];
@@ -159,6 +166,10 @@ const searchSlice = createSlice({
   },
 });
 
-export const { clearSearchMovies, setSearchMovie, clearSearchFull } =
-  searchSlice.actions;
+export const {
+  clearSearchMovies,
+  setSearchMovie,
+  clearSearchFull,
+  updateSearchQuery,
+} = searchSlice.actions;
 export default searchSlice.reducer;

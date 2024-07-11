@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import styles from "./Home.module.scss";
+import "../../App.css";
 import { useDispatch, useSelector } from "react-redux";
-import { clearMovies, getMovieInfo, getMovies } from "../../store/moviesSlice";
+import { getMovieInfo, getMovies } from "../../store/moviesSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import Movies from "../../ui-components/Movies/Movies";
 import { fetchMovies } from "../../store/paginationSlice";
 import { State } from "../../utility/types";
-// import { getMovieInfo } from "../../store/searchSlice";
+import { ReactComponent as NotFound } from "../../assets/empty.svg";
 
 const Home = () => {
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
@@ -17,6 +18,8 @@ const Home = () => {
   const searchResults =
     useSelector((state: State) => state.search.searchMovies) || [];
   const movieInfos = useSelector((state: State) => state.movies.movieInfos);
+  const searchQuery = useSelector((state: State) => state.search.query);
+  const searchStatus = useSelector((state) => state.search.status);
 
   const [page, setPage] = useState(2);
 
@@ -49,9 +52,18 @@ const Home = () => {
 
   return (
     <div className={styles.movies}>
-      {searchResults.length > 0 ? (
+      {searchStatus === "loading" ? (
+        <div className={styles.spinner__wrapper}>
+          <span className={styles.spinner}></span>
+        </div>
+      ) : searchResults.length > 0 ? (
         <div className={styles.movies__wrapper}>
           <Movies data={searchResults} movieInfos={movieInfos} />
+        </div>
+      ) : searchQuery && searchResults.length === 0 ? (
+        <div className="search__notFound">
+          <NotFound className="search__notFound__img" />
+          <div className="search__notFound__text">Movies not found</div>
         </div>
       ) : (
         <>
