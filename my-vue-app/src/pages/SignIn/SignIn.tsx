@@ -57,7 +57,9 @@ const SignIn = () => {
           onChange={InputChange}
           placeholder="Your password"
         />
-        <p className={styles.signIn__forgot}>Forgot password?</p>
+        <Link className={styles.signIn__forgot} to={"/forgot-password"}>
+          Forgot password?
+        </Link>
         <button className={styles.signIn__btn} type="submit">
           Sign In
         </button>

@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  isRejectedWithValue,
+} from "@reduxjs/toolkit";
 import { ActivateUser } from "../utility/types";
 
 export const createUser = createAsyncThunk(
@@ -159,6 +163,56 @@ export const refreshToken = createAsyncThunk(
         JSON.stringify({ refresh: refresh, access: data.access })
       );
       dispatch(getUserProfile());
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "user/resetPassword",
+  async (email, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        "https://studapi.teachmeskills.by/auth/users/reset_password/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Error :(");
+      }
+
+      return response;
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
+
+export const resetPasswordConfirm = createAsyncThunk(
+  "user/resetPassword",
+  async ({ uid, token, newPassword }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        "https://studapi.teachmeskills.by/auth/users/reset_password_confirm/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            uid: uid,
+            token: token,
+            new_password: newPassword,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Error :(");
+      }
+
+      return response;
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
