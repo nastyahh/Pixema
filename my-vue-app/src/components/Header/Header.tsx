@@ -14,12 +14,14 @@ import {
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import { useFilterMenu } from "../../HOC/FilterMenuProvider";
 import { useLocation } from "react-router-dom";
-import { ThemeContext } from "../../Context/context";
+import { ActiveContext, ThemeContext } from "../../Context/context";
 import { useDebounce } from "../../hook/useDebounce";
+import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
+import Menu from "../Menu/Menu";
 
 const Header = () => {
   const [search, setSearch] = useState("");
-  const { toggleFilterMenu } = useFilterMenu();
+  const { isFilterMenuOpen, toggleFilterMenu } = useFilterMenu();
   const { isDark } = useContext(ThemeContext);
   const filtersIsApplied = useSelector(
     (state) => state.search.filtersIsApplied
@@ -31,8 +33,12 @@ const Header = () => {
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
 
   useEffect(() => {
-    dispatch(updateSearchQuery(debouncedSearch));
-    dispatch(searchMovies(debouncedSearch));
+    if (location.pathname === "/") {
+      dispatch(updateSearchQuery(debouncedSearch));
+      dispatch(searchMovies(debouncedSearch));
+    } else {
+      dispatch(clearSearchMovies());
+    }
   }, [debouncedSearch]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +57,7 @@ const Header = () => {
     location.pathname === "/sign-in" || location.pathname === "/sign-up";
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${isDark ? "" : styles.light}`}>
       <div className={`container ${styles.header__container}`}>
         <div className={styles.header__logo}>
           {isDark ? <LogoDark /> : <LogoLight />}
@@ -65,7 +71,7 @@ const Header = () => {
                 type="text"
                 placeholder="Search"
                 className={styles.header__search__input}
-                disabled={isSearchByFiltersPage}
+                disabled={isSearchByFiltersPage || location.pathname !== "/"}
               />
               <div className={styles.header__search__filterWrap}>
                 <button
@@ -83,10 +89,15 @@ const Header = () => {
                 </button>
               </div>
             </div>
-            <Profile />
+            <div className={styles.profileWrapper}>
+              <Profile />
+              <HamburgerMenu className={styles.hamburger_menu} />
+            </div>
           </>
         )}
       </div>
+      {/* {isActive && <Menu />} */}
+      <Menu />
     </header>
   );
 };

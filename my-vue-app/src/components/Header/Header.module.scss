@@ -1,3 +1,5 @@
+@import "../../scss/variables";
+
 .header {
   &__container {
     display: flex;
@@ -22,13 +24,12 @@
       font-size: 16px;
     }
   }
-  &__search__filterWrap {
-  }
   &__search__filter {
     position: absolute;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
+
     &Indicator {
       position: absolute;
       width: 10px;
@@ -36,5 +37,69 @@
       border-radius: 50%;
       background: #7b61ff;
     }
+  }
+}
+.header.light {
+  .header {
+    &__search__input {
+      background: #fff;
+      border: 2px solid $light-gray;
+      color: #000;
+      &:focus {
+        border: 2px solid $light-black;
+      }
+    }
+  }
+}
+.hamburger_menu {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .header {
+    &__logo {
+      margin-right: 80px;
+    }
+    &__search {
+      width: 65%;
+      margin-right: 32px;
+    }
+  }
+  .hamburger_menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 16px;
+    background-color: $primary-purple;
+    cursor: pointer;
+  }
+}
+@media (max-width: 768px) {
+  .header {
+    &__container {
+      position: relative;
+      flex-wrap: wrap;
+    }
+    &__logo {
+      margin: 0 0 35px 0;
+      order: 0;
+    }
+    &__search {
+      width: 100%;
+      margin-right: 0;
+      order: 2;
+    }
+  }
+  .hamburger_menu {
+    position: absolute;
+    right: 0;
+    top: 0px;
+    order: 1;
+  }
+}
+@media (max-width: 500px) {
+  .header {
+    padding: 50px 0 30px;
   }
 }

@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { ActiveContext, ThemeContext } from "./Context/context";
+import {
+  ActiveContext,
+  BurgerMenuContext,
+  ThemeContext,
+} from "./Context/context";
 import Header from "./components/Header/Header";
 import AuthProvider from "./HOC/AuthProvider";
 import { Outlet } from "react-router-dom";
@@ -18,6 +22,7 @@ import FilterMenu from "./components/FilterMenu/FilterMenu";
 const Layout = () => {
   const [isActive, setIsactive] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
 
   const toggleTheme = () => {
@@ -33,14 +38,15 @@ const Layout = () => {
 
     const initAuth = async () => {
       const storedLogin = localStorage.getItem("Login");
+
       if (storedLogin) {
         try {
-          await dispatch(getUserProfile());
           dispatch(toggleIsLogged(true));
+          await dispatch(getUserProfile()).unwrap();
         } catch (error) {
           console.error("Error getting user profile:", error);
           try {
-            await dispatch(refreshToken());
+            await dispatch(refreshToken()).unwrap();
           } catch (refreshError) {
             console.error("Error refreshing token:", refreshError);
             localStorage.removeItem("Login");
@@ -61,18 +67,30 @@ const Layout = () => {
         <ActiveContext.Provider
           value={{ isActive: isActive, setIsActive: setIsactive }}
         >
-          <div className={`app ${isDark ? "dark" : "light"}`}>
-            <div className="container">
-              <FilterMenuProvider>
-                <Header />
-                <FilterMenu />
-              </FilterMenuProvider>
-              <section className="main">
-                <Navbar />
-                <Outlet />
-              </section>
+          <BurgerMenuContext.Provider
+            value={{
+              isMenuOpen,
+              toggleMenu() {
+                setIsMenuOpen((prev) => !prev);
+              },
+              closeMenu() {
+                setIsMenuOpen(false);
+              },
+            }}
+          >
+            <div className={`app ${isDark ? "dark" : "light"}`}>
+              <div className="container">
+                <FilterMenuProvider>
+                  <Header />
+                  <FilterMenu />
+                </FilterMenuProvider>
+                <section className="main">
+                  <Navbar />
+                  <Outlet />
+                </section>
+              </div>
             </div>
-          </div>
+          </BurgerMenuContext.Provider>
         </ActiveContext.Provider>
       </AuthProvider>
     </ThemeContext.Provider>

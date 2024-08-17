@@ -13,6 +13,8 @@ import Auth from "./HOC/Auth";
 import Settings from "./pages/Settings/Settings";
 import SearchByFilters from "./pages/SearchByFilters/SearchByFilters";
 import Confirmation from "./pages/Confirmation/Confirmation";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import PasswordConfirm from "./pages/PasswordConfirm/PasswordConfirm";
 
 function App() {
   return (
@@ -24,9 +26,9 @@ function App() {
         <Route
           path="favorites"
           element={
-            <Auth>
-              <Favorites />
-            </Auth>
+            // <Auth>
+            <Favorites />
+            // </Auth>
           }
         />
         <Route path="trends" element={<Trends />} />
@@ -38,6 +40,8 @@ function App() {
         {" "}
         <Route path="sign-in" element={<SignIn />} />
         <Route path="sign-up" element={<SignUp />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="reset-password-confirm" element={<PasswordConfirm />} />
       </Route>{" "}
     </Routes>
   );

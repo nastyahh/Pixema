@@ -1,0 +1,20 @@
+@import "../../scss/variables";
+svg {
+  position: absolute;
+}
+.hamburger_menu {
+  visibility: hidden;
+  position: absolute;
+}
+@media (max-width: 1100px) {
+  .hamburger_menu {
+    visibility: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 16px;
+    background-color: $primary-purple;
+    cursor: pointer;
+  }
+}
