@@ -1,4 +1,3 @@
-// FilterMenuContext.tsx
 import { createContext, useContext, useState } from "react";
 
 const FilterMenuContext = createContext({
