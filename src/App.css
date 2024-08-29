@@ -1,0 +1,110 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-size: 16px;
+  line-height: 24px;
+  background-color: #000;
+}
+
+#root {
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.app {
+  min-height: 100vh;
+}
+.app.light {
+  background: #fff;
+}
+.app.dark {
+  background: #000;
+}
+
+.container {
+  max-width: 1836px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.main {
+  display: flex;
+}
+.section {
+  height: 100%;
+  width: calc(100% - 300px);
+  padding-bottom: 35px;
+}
+.section-wrap {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(266px, 1fr));
+  gap: 31px;
+  margin-bottom: 64px;
+}
+
+.auth-layout {
+  min-height: 100vh;
+  background: url("./assets/sign-in-frame.png") center no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+.auth-container {
+  padding: 0 65px;
+}
+
+header {
+  padding: 60px 0;
+}
+
+.auth-footer {
+  position: absolute;
+  width: 100%;
+  height: 25px;
+  bottom: 25px;
+  text-align: center;
+}
+.search__notFound {
+  width: 26%;
+  margin: 0 auto;
+  padding-top: 55px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.search__notFound__img {
+  margin-bottom: 20px;
+}
+.search__notFound__text {
+  text-align: center;
+  font-size: 22px;
+  color: #c5add5;
+}
+@media (max-width: 700px) {
+  .auth-container {
+    padding: 0 25px;
+  }
+  .search__notFound {
+    width: 45%;
+  }
+}
+@media (max-width: 500px) {
+  header.auth-header {
+    padding: 50px 0 30px;
+  }
+  .auth-logo {
+    width: 120px;
+  }
+  .auth-container {
+    padding: 0 10px;
+  }
+  .search__notFound__text {
+    font-size: 16px;
+  }
+}

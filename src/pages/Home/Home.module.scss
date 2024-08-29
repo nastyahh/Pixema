@@ -1,0 +1,70 @@
+@import "../../scss/variables", "../../scss/global";
+
+.movies {
+  @include section();
+  width: 100%;
+  &__btnWrapper {
+    display: flex;
+    justify-content: center;
+  }
+  &__show_btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 40px;
+    padding: 8px 24px;
+    background-color: $dark-gray;
+    font-weight: 500;
+  }
+  &__show_btn.light {
+    background: $light-gray;
+    color: #fff;
+  }
+}
+
+.spinner {
+  width: 100px;
+  height: 100px;
+  border: 8px solid $primary-purple;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  &.showMore {
+    width: 20px;
+    height: 20px;
+    border: 3px solid $primary-purple;
+    border-bottom-color: transparent;
+  }
+  &__wrapper {
+    width: 100px;
+    margin: 10% auto;
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1750px) {
+  .movies__wrapper {
+    gap: 35px;
+  }
+}
+@media (max-width: 1450px) {
+  .movies__wrapper {
+    gap: 35px;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  }
+}
+@media (max-width: 1100px) {
+  .movies {
+    width: 100%;
+  }
+}

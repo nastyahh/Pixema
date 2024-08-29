@@ -1,0 +1,123 @@
+.user {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  gap: 20px;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  &__avatar {
+    padding: 16px;
+    border-radius: 10px;
+    background-color: #7b61ff;
+  }
+  &__name {
+    display: flex;
+  }
+  &__profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  &__logOut {
+    width: 100%;
+  }
+  &:hover &__name {
+    color: #7b61ff;
+  }
+  &:hover &__avatar {
+    background-color: #917bfc;
+  }
+  &:hover &__avatar svg path,
+  &:hover .arrowRight svg path {
+    fill: #7b61ff;
+  }
+  &:hover &__avatar svg path {
+    stroke: #000;
+  }
+  &__btnBottom svg {
+    width: 24px;
+    height: 24px;
+  }
+  &__menu {
+    display: none;
+    width: 100%;
+    position: absolute;
+    bottom: -250%;
+    z-index: 30;
+    border-radius: 10px;
+    overflow: hidden;
+    &__edit,
+    .user__logOut {
+      padding: 17px 20px 15px;
+      background: #242426;
+      border-radius: 0;
+      border: none;
+      text-align: left;
+      font-weight: 500;
+      line-height: 24px;
+      cursor: pointer;
+    }
+    &__edit {
+      border-bottom: 1px solid #323537;
+    }
+    &Link {
+      color: #fff;
+      &:hover {
+        color: #cecece;
+      }
+    }
+  }
+  &__logOut {
+    color: #7b61ff;
+    &:hover {
+      color: #a18ffe;
+    }
+  }
+  &__menu.open {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.arrowRight {
+  padding: 2px 8px;
+  flex-shrink: 0;
+}
+.user.light {
+  .user {
+    &__name {
+      color: #000;
+      font-weight: 500;
+    }
+    &__profile:hover .user__name {
+      color: #7b61ff;
+    }
+    &__btnBottom svg path {
+      stroke: #000;
+    }
+  }
+}
+
+@media (max-width: 1450px) {
+  .user {
+    gap: 15px;
+  }
+}
+@media (max-width: 1100px) {
+  .user {
+    display: none;
+    &.light &__name {
+      color: #fff;
+    }
+    &.light &__btnBottom svg path {
+      stroke: #fff;
+    }
+  }
+}
+@media (max-width: 400px) {
+  .user__btnBottom {
+    padding: 0;
+  }
+}

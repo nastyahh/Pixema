@@ -1,0 +1,80 @@
+@import "../scss/variables";
+
+@mixin section() {
+  height: 100%;
+  width: calc(100% - 300px);
+  padding-bottom: 35px;
+  &__wrapper {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 64px;
+  }
+  @media (max-width: 1750px) {
+    &__wrapper {
+      gap: 35px;
+    }
+  }
+  @media (max-width: 1450px) {
+    &__wrapper {
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    }
+  }
+  @media (max-width: 1100px) {
+    width: 100%;
+  }
+}
+@mixin back($top, $left) {
+  position: absolute;
+  top: $top;
+  left: $left;
+  & svg path {
+    fill: $primary-purple;
+  }
+}
+
+input {
+  border: 1px solid transparent;
+  &:focus {
+    border: 1px solid $primary-purple;
+  }
+}
+
+.spinner {
+  width: 100px;
+  height: 100px;
+  border: 8px solid rgb(123, 97, 255);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  &.showMore {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgb(123, 97, 255);
+    border-bottom-color: transparent;
+  }
+  &__wrapper {
+    width: 100px;
+    margin: 10% auto;
+  }
+  @media (max-width: 1450px) {
+    &__wrapper {
+      margin: 0;
+      position: absolute;
+      left: 50%;
+      top: 30%;
+    }
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

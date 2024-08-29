@@ -1,0 +1,192 @@
+@import "../../scss/variables", "../../scss/global";
+
+.settings {
+  @include section();
+  & form {
+    margin-bottom: 40px;
+  }
+  & input {
+    border: 2px solid transparent;
+  }
+  &.unauthorized h2 {
+    text-align: center;
+    font-size: 23px;
+  }
+  &__login {
+    color: $primary-purple;
+    &:hover {
+      color: #9883fe;
+    }
+  }
+  & input:focus {
+    border: 2px solid $primary-purple;
+  }
+  &_subform {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+    background: $light-black;
+    border-radius: 10px;
+  }
+  &_subform label {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    margin-bottom: 10px;
+  }
+  &_subform label.switch {
+    margin-bottom: 0;
+  }
+  &_inputWrap {
+    width: calc(50% - 40px);
+  }
+  &_title {
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 36px;
+  }
+  &_mode &_subform {
+    align-items: center;
+    justify-content: space-between;
+  }
+  &_modeTheme p {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    color: #afb2b6;
+  }
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 40px;
+  }
+  &__actions button {
+    width: 266px;
+    padding: 16px 0;
+    text-align: center;
+  }
+  &__btnSave {
+    background: $primary-purple;
+  }
+  &__btnCancel {
+    background: $dark-gray;
+  }
+}
+.settings.light {
+  .settings {
+    &_title,
+    &__login_text {
+      color: #000;
+    }
+    &_subform {
+      background: #3a3a3b;
+      & input {
+        background: #fff;
+        color: #000;
+      }
+    }
+    &_modeTheme p {
+      color: $primary-purple;
+    }
+  }
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 20px;
+  & input {
+    display: none;
+  }
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  &:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: -2px;
+    bottom: 0px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+}
+
+input:checked + .slider {
+  background-color: $primary-purple;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px $primary-purple;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(17px);
+  -ms-transform: translateX(17px);
+  transform: translateX(17px);
+}
+
+.slider.round {
+  border-radius: 34px;
+  &:before {
+    border-radius: 50%;
+  }
+}
+
+@media (max-width: 800px) {
+  .settings {
+    margin-bottom: 25px;
+    & form {
+      margin-bottom: 25px;
+    }
+    &_subform {
+      flex-direction: column;
+      gap: 25px;
+      padding: 25px 30px;
+    }
+    &_subform.theme {
+      flex-direction: row;
+    }
+    &_inputWrap {
+      width: 100%;
+    }
+    &__actions {
+      justify-content: center;
+    }
+  }
+}
+@media (max-width: 500px) {
+  .settings {
+    &_title {
+      font-size: 20px;
+    }
+    &_subform {
+      padding: 15px 20px;
+      gap: 10px;
+    }
+    & input {
+      font-size: 14px;
+      padding: 10px 15px;
+    }
+    & label {
+      font-size: 15px;
+    }
+    &__actions {
+      gap: 20px;
+    }
+    &__actions button {
+      padding: 10px 0;
+    }
+  }
+}
