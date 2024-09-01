@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import styles from "../SignIn/SignIn.module.scss";
-import { ChangeEvent, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { resetPasswordConfirm } from "../../store/userSlice";
 import { ReactComponent as Info } from "../../assets/info.svg";
 import { useNavigate } from "react-router-dom";

@@ -58,7 +58,14 @@ export interface SearchQuery {
   maxRating: string;
   country: string;
 }
-
+export interface Movie {
+  imdbID: string;
+  Title: string;
+  Poster: string;
+}
+export interface FilteredMoviesProps {
+  data: Movie[];
+}
 export interface MovieInfo {
   imdbID: string;
   Title: string;
@@ -77,6 +84,25 @@ export interface MovieInfo {
   Writer: string;
 }
 
+export interface MoviesProps {
+  data: MovieInfo[];
+  movieInfos: MovieInfo[];
+}
+
+export interface filterInitialState {
+  title: string;
+  year: string;
+  genres: string[];
+  minRating: string;
+  maxRating: string;
+  country: string[];
+}
+
+export interface selectedOptions {
+  label: string;
+  value: string;
+}
+
 export interface State {
   user: {
     isLogged: boolean;
@@ -92,6 +118,9 @@ export interface State {
     movieInfos: [];
     status: string | null;
     movieInfoStatus: string | null;
+    trendsStatus: string | null;
+    trends: [];
+    recommendedMovies: [];
   };
   pagination: {
     movies: [];
@@ -103,5 +132,9 @@ export interface State {
     searchByFilters: [];
     searchFull: [];
     status: string;
+    searchFullStatus: string | null;
+  };
+  navbar: {
+    isLogged: boolean;
   };
 }

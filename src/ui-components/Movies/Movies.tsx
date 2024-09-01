@@ -3,8 +3,9 @@ import styles from "./Movies.module.scss";
 import { ReactComponent as Fire } from "../../assets/fire.svg";
 import { useContext } from "react";
 import { ThemeContext } from "../../Context/context";
+import { MoviesProps } from "../../utility/types";
 
-const Movies = ({ data, movieInfos }) => {
+const Movies = ({ data, movieInfos }: MoviesProps) => {
   const { isDark } = useContext(ThemeContext);
   const location = useLocation();
 

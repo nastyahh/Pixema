@@ -4,11 +4,13 @@ import { getTrends } from "../../store/moviesSlice";
 import Movies from "../../ui-components/Movies/Movies";
 import styles from "./Trends.module.scss";
 import "../../scss/_global.scss";
+import { State } from "../../utility/types";
+import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 
 const Trends = () => {
-  const dispatch = useDispatch();
-  const trends = useSelector((state) => state.movies.trends);
-  const status = useSelector((state) => state.movies.trendsStatus);
+  const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
+  const trends = useSelector((state: State) => state.movies.trends);
+  const status = useSelector((state: State) => state.movies.trendsStatus);
 
   useEffect(() => {
     if (trends.length === 0) {

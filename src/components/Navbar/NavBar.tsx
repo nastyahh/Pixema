@@ -1,25 +1,27 @@
 import { NavLink, useLocation } from "react-router-dom";
 import styles from "./Navbar.module.scss";
 import { useSelector } from "react-redux";
-import { IMenu } from "../../utility/types";
-import { useContext } from "react";
+import { IMenu, State } from "../../utility/types";
+import { useContext, useMemo } from "react";
 import { BurgerMenuContext, ThemeContext } from "../../Context/context";
 
 const Navbar = ({ className }: IMenu) => {
   const { isDark } = useContext(ThemeContext);
-  const location = useLocation();
-  const isLogged = useSelector((state) => state.user.isLogged);
   const { closeMenu } = useContext(BurgerMenuContext);
+  const location = useLocation();
+  const isLogged = useSelector((state: State) => state.user.isLogged);
 
   const linkClassName =
     () =>
-    ({ isActive }) =>
+    ({ isActive }: { isActive: boolean }) =>
       isActive
         ? `${styles.navbar__item} ${styles.active}`
         : styles.navbar__item;
 
-  const isAuthPage =
-    location.pathname === "/sign-in" || location.pathname === "/sign-up";
+  const isAuthPage = useMemo(
+    () => location.pathname === "/sign-in" || location.pathname === "/sign-up",
+    [location.pathname]
+  );
 
   return (
     <>

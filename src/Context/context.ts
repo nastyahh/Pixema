@@ -9,8 +9,13 @@ export const ActiveContext = createContext<IActiveContext | undefined>(
   undefined
 );
 
-export const ThemeContext = createContext<IThemeContext | undefined>(undefined);
+export const ThemeContext = createContext<IThemeContext>({
+  isDark: false,
+  toggleTheme: () => {},
+});
 
-export const BurgerMenuContext = createContext<IBurgerMenuContext | undefined>(
-  undefined
-);
+export const BurgerMenuContext = createContext<IBurgerMenuContext>({
+  isMenuOpen: false,
+  toggleMenu: () => {},
+  closeMenu: () => {},
+});

@@ -13,8 +13,6 @@ const favoritesSlice = createSlice({
       );
       if (!movieExists) {
         state.favoriteMovies.push(action.payload);
-        console.log("Movie added:", action.payload);
-        console.log(state.favoriteMovies);
       } else {
         console.log("Movie already exists:", action.payload);
       }

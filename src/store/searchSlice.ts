@@ -39,7 +39,7 @@ export const searchByFilters = createAsyncThunk(
       year: string;
       genres?: string[];
       rating?: string;
-      country?: string;
+      country?: string[];
     },
     { rejectWithValue, dispatch }
   ) => {

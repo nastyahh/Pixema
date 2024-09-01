@@ -1,6 +1,8 @@
+@import "../../scss/_variables.scss";
+
 .confirmation {
   padding: 20px;
-  border: 1px solid #7b61ff;
+  border: 1px solid $primary-purple;
   border-radius: 10px;
   &__icon {
     width: 60px;
@@ -37,9 +39,9 @@
   top: 0;
   right: 0;
   border-left: 35px solid Transparent;
-  border-right: 37.5px solid #7b61ff;
+  border-right: 37.5px solid $primary-purple;
   border-top: 25px solid Transparent;
-  border-bottom: 25px solid #7b61ff;
+  border-bottom: 25px solid $primary-purple;
   z-index: 5;
   border-bottom-right-radius: 2.5px;
 }
@@ -51,7 +53,7 @@
   border-left: 37.5px solid #b187cd;
   border-right: 35px solid Transparent;
   border-top: 25px solid Transparent;
-  border-bottom: 25px solid #7b61ff;
+  border-bottom: 25px solid $primary-purple;
   z-index: 4;
   border-bottom-left-radius: 2.5px;
 }
@@ -62,7 +64,7 @@
   left: 0;
   border-left: 37.5px solid transparent;
   border-right: 37.5px solid transparent;
-  border-top: 25px solid #c5add5;
+  border-top: 25px solid $dusty-pink;
   border-bottom: 25px solid transparent;
   z-index: 6;
   transform-origin: top;
@@ -86,7 +88,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 40px;
-  color: #7b61ff;
+  color: $primary-purple;
   font-weight: 900;
 }
 .maketingeam:hover .nimationesta:before {
@@ -97,4 +99,24 @@
 .maketingeam:hover .paneatuConveg {
   top: -20px;
   transition: all 1s 1s ease;
+}
+
+@media (max-width: 1100px) {
+  .confirmation {
+    width: 100%;
+  }
+}
+@media (max-width: 500px) {
+  .confirmation {
+    &__title {
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+    &__list {
+      font-size: 14px;
+      &:not(:last-of-type) {
+        margin-bottom: 7px;
+      }
+    }
+  }
 }

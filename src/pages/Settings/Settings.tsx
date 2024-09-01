@@ -5,12 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPassword } from "../../store/settingsSlice";
 import { Link } from "react-router-dom";
 import "../../scss/_global.scss";
+import { State } from "../../utility/types";
 
 const Settings = () => {
   const { isDark, toggleTheme } = useContext(ThemeContext);
   const dispatch = useDispatch();
 
-  const userData = useSelector((state) => state.user.profile);
+  const userData = useSelector((state: State) => state.user.profile);
 
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
@@ -28,8 +29,7 @@ const Settings = () => {
     setIsFocused(false);
   };
 
-  const handleCancel = (event) => {
-    event.preventDefault();
+  const handleCancel = () => {
     setPasswordData({
       currentPassword: "",
       newPassword: "",
@@ -38,16 +38,15 @@ const Settings = () => {
     setIsFocused(false);
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setPasswordData({ ...passwordData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const { currentPassword, newPassword, confirmPassword } = passwordData;
-
     if (newPassword !== confirmPassword) {
       alert("New passwords do not match");
       return;
@@ -80,7 +79,7 @@ const Settings = () => {
     >
       <div className={`${styles.settings_profile} ${styles.settings_section}`}>
         <h2 className={styles.settings_title}>Profile</h2>
-        <form className={styles.settings_subform}>
+        <div className={styles.settings_subform}>
           <div className={styles.settings_inputWrap}>
             <label>Name</label>
             <input type="text" placeholder={userData.username} disabled />
@@ -89,11 +88,11 @@ const Settings = () => {
             <label htmlFor="">Email</label>
             <input type="text" placeholder={userData.email} disabled />
           </div>
-        </form>
+        </div>
       </div>
       <div className={`${styles.settings_password} ${styles.settings_section}`}>
         <h2 className={styles.settings_title}>Password</h2>
-        <form className={styles.settings_subform}>
+        <div className={styles.settings_subform}>
           <div className={styles.settings_inputWrap}>
             <label htmlFor="">Password</label>
             <input
@@ -128,11 +127,11 @@ const Settings = () => {
               onBlur={handleBlur}
             />
           </div>
-        </form>
+        </div>
       </div>
       <div className={`${styles.settings_mode} ${styles.settings_section}`}>
         <h2 className={styles.settings_title}>Color mode</h2>
-        <form className={`${styles.settings_subform} ${styles.theme}`}>
+        <div className={`${styles.settings_subform} ${styles.theme}`}>
           {isDark ? (
             <div className={styles.settings_modeTheme}>
               <label className={styles.settings_modeTheme__name}>Dark</label>
@@ -148,11 +147,15 @@ const Settings = () => {
             <input type="checkbox" onChange={toggleTheme} checked={isDark} />
             <span className={`${styles.slider} ${styles.round}`}></span>
           </label>
-        </form>
+        </div>
       </div>
 
       <div className={styles.settings__actions}>
-        <button className={styles.settings__btnCancel} onClick={handleCancel}>
+        <button
+          type="button"
+          className={styles.settings__btnCancel}
+          onClick={handleCancel}
+        >
           Cancel
         </button>
         <button type="submit" className={styles.settings__btnSave}>

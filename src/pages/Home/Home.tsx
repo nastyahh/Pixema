@@ -12,19 +12,27 @@ import { ReactComponent as NotFound } from "../../assets/empty.svg";
 const Home = ({ isDark }) => {
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
 
-  const data = useSelector((state: State) => state.movies.movies);
-  const movies = useSelector((state: State) => state.pagination.movies);
-  const status = useSelector((state: State) => state.pagination.status);
-  const searchResults =
-    useSelector((state: State) => state.search.searchMovies) || [];
-  const movieInfos = useSelector((state: State) => state.movies.movieInfos);
-  const searchQuery = useSelector((state: State) => state.search.query);
-  const searchStatus = useSelector((state) => state.search.status);
+  const {
+    movies: data,
+    paginationMovies: movies,
+    paginationStatus: loadingStatus,
+    searchMovies: searchResults = [],
+    movieInfos,
+    searchQuery,
+    searchStatus,
+  } = useSelector((state: State) => ({
+    movies: state.movies.movies,
+    paginationMovies: state.pagination.movies,
+    paginationStatus: state.pagination.status,
+    searchMovies: state.search.searchMovies,
+    movieInfos: state.movies.movieInfos,
+    searchQuery: state.search.query,
+    searchStatus: state.search.status,
+  }));
 
   const [page, setPage] = useState(2);
 
   useEffect(() => {
-    // dispatch(clearMovies());
     dispatch(getMovies());
   }, []);
 
@@ -80,7 +88,7 @@ const Home = ({ isDark }) => {
               onClick={loadMoreMovies}
             >
               Show more{" "}
-              {status === "loading" ? (
+              {loadingStatus === "loading" ? (
                 <span className={`${styles.spinner} ${styles.showMore}`}></span>
               ) : (
                 ""

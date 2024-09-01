@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../SignIn/SignIn.module.scss";
 import { useContext, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createUser } from "../../store/userSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import { ReactComponent as Arrow } from "../../assets/arrow-prev.svg";
@@ -64,13 +64,6 @@ const SignUp = () => {
         placeholder="Your email"
       />
       <label htmlFor="">Password</label>
-      {/* <input
-        type="password"
-        name="password"
-        value={userSignUp.password}
-        onChange={InputChange}
-        placeholder="Your password"
-      /> */}
       <InputPassword value={userSignUp.password} onChange={InputChange} />
       <button type="submit" className={styles.signIn__btn}>
         Sign up

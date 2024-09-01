@@ -14,25 +14,18 @@ const Menu = () => {
         toggleMenu(false);
       }
     };
-
     if (isMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "hidden";
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "";
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMenuOpen, toggleMenu]);
-
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-  }, [isMenuOpen]);
 
   return (
     <div

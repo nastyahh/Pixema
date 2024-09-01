@@ -9,7 +9,6 @@ const Confirmation = () => {
           <li>1. Go to your mail</li>
           <li>2. Open the confirmation email</li>
           <li>
-            {" "}
             3. Copy from the link line of such type: ".../activate/uid/token"
             link and insert it into the address bar
           </li>

@@ -22,7 +22,7 @@ export const getMovies = createAsyncThunk(
 export const getTrends = createAsyncThunk(
   "movies/getTrends",
   async (_, { rejectWithValue, dispatch }) => {
-    let trends = [];
+    let trends: [] = [];
     let page = 1;
 
     try {
@@ -38,7 +38,7 @@ export const getTrends = createAsyncThunk(
         const movies = data.Search;
 
         const movieDetails = await Promise.all(
-          movies.map(async (movie) => {
+          movies.map(async (movie: { imdbID: string }) => {
             const detailsAction = await dispatch(getMovieInfo(movie.imdbID));
             if (detailsAction.error) {
               throw new Error(detailsAction.error.message);
@@ -79,7 +79,7 @@ export const fetchRecommendedMovies = createAsyncThunk(
       const movies = data.Search;
 
       const movieDetails = await Promise.all(
-        movies.map(async (movie) => {
+        movies.map(async (movie: { imdbID: string }) => {
           const detailsResponse = await fetch(
             `https://www.omdbapi.com/?apikey=2c09a177&i=${movie.imdbID}&plot=full`
           );
@@ -155,7 +155,7 @@ const moviesSlice = createSlice({
         state.movieInfoStatus = "fulfilled";
         state.movieInfo = action.payload;
         const existingMovie = state.movieInfos.find(
-          (movie) => movie.imdbID === action.payload.imdbID
+          (movie: { imdbID: string }) => movie.imdbID === action.payload.imdbID
         );
         if (!existingMovie) {
           state.movieInfos.push(action.payload);

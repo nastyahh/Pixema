@@ -16,7 +16,6 @@ import { useSearchFilterForm } from "../../hook/useSearchFilterForm";
 const FilterMenu = () => {
   const { isFilterMenuOpen, toggleFilterMenu } = useFilterMenu();
   const filterMenu = useRef(null);
-
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
   const navigate = useNavigate();
 
@@ -47,9 +46,9 @@ const FilterMenu = () => {
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const isValid = !!searchQuery.title && !!searchQuery.year;
+    const isValid = searchQuery.title && searchQuery.year;
     if (!isValid) {
-      setValidity({ title: !!searchQuery.title, year: !!searchQuery.year });
+      setValidity({ title: !searchQuery.title, year: !searchQuery.year });
       return;
     }
     const rating = `${searchQuery.minRating || 0}-${
@@ -73,10 +72,11 @@ const FilterMenu = () => {
       <button className={styles.closeBtn} onClick={toggleFilterMenu}>
         <CloseFilters />
       </button>
-      <form onSubmit={handleSearch} name="searchForm">
-        <label htmlFor="">Full or short movie name</label>{" "}
+      <form name="searchForm" onSubmit={handleSearch}>
+        <label htmlFor="title">Full or short movie name</label>{" "}
         <div className={styles.invalidWrapper}>
           <input
+            id="title"
             type="text"
             name="title"
             value={searchQuery.title}
@@ -91,9 +91,10 @@ const FilterMenu = () => {
             </div>
           )}
         </div>
-        <label htmlFor="">Year</label>{" "}
+        <label htmlFor="year">Year</label>{" "}
         <div className={styles.invalidWrapper}>
           <input
+            id="year"
             type="number"
             name="year"
             value={searchQuery.year}
@@ -108,7 +109,7 @@ const FilterMenu = () => {
             </div>
           )}
         </div>
-        <label htmlFor="">Genre</label>{" "}
+        <label>Genre</label>{" "}
         <Select
           styles={customStyles}
           isMulti
@@ -125,10 +126,11 @@ const FilterMenu = () => {
             label: genre,
           }))}
         />
-        <label htmlFor="">Rating</label>
+        <label htmlFor="rating">Rating</label>
         <div className={styles.filterMenu__inputWrapper}>
           <div>
             <input
+              id="rating"
               type="number"
               name="minRating"
               value={searchQuery.minRating}
@@ -161,22 +163,19 @@ const FilterMenu = () => {
             searchQuery.country.includes(option.label)
           )}
         />
+        <div className={styles.filterMenu__actions}>
+          <button type="submit" className={styles.filterMenu__searchBtn}>
+            Show results
+          </button>
+          <button
+            type="button"
+            onClick={clearAllFilters}
+            className={styles.filterMenu__clearFilters}
+          >
+            Clear filter
+          </button>
+        </div>
       </form>
-      <div className={styles.filterMenu__actions}>
-        <button
-          type="submit"
-          className={styles.filterMenu__searchBtn}
-          onClick={handleSearch}
-        >
-          Show results
-        </button>
-        <button
-          onClick={clearAllFilters}
-          className={styles.filterMenu__clearFilters}
-        >
-          Clear filter
-        </button>
-      </div>
     </div>
   );
 };

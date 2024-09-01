@@ -64,13 +64,13 @@ input:not(:last-of-type) {
   &__btn {
     width: 100%;
     margin: 40px 0 32px;
-    background-color: #7b61ff;
+    background-color: $primary-purple;
   }
   &__registration {
     text-align: center;
   }
   &__registrationLink {
-    color: #7b61ff;
+    color: $primary-purple;
   }
 }
 form.light {
@@ -103,14 +103,14 @@ form.light {
 }
 
 .errorMessage {
-  color: #7b61ff;
+  color: $primary-purple;
 }
 .hint {
   font-size: 13px;
   opacity: 0.8;
   &__highlight {
     opacity: 1;
-    color: #7b61ff;
+    color: $primary-purple;
   }
 }
 .info {

@@ -12,7 +12,7 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
-  const InputChange = (event) => {
+  const InputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
     if (event.target.value) {
       setError("");
@@ -26,7 +26,6 @@ const ForgotPassword = () => {
       return;
     }
     dispatch(resetPassword(email)).then((result) => {
-      console.log(result);
       if (result.meta.requestStatus === "fulfilled") {
         navigate("/reset-password-confirm");
       }

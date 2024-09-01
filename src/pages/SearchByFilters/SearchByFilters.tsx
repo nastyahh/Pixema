@@ -3,11 +3,11 @@ import "../../App.css";
 import { useSelector } from "react-redux";
 import { ReactComponent as NotFound } from "../../assets/empty.svg";
 import Movies from "../../ui-components/Movies/Movies";
+import { State } from "../../utility/types";
 
 const SearchByFilters = () => {
-  const searchByFilters = useSelector((state) => state.search.searchByFilters);
-  const searchFull = useSelector((state) => state.search.searchFull);
-  const status = useSelector((state) => state.search.searchFullStatus);
+  const searchFull = useSelector((state: State) => state.search.searchFull);
+  const status = useSelector((state: State) => state.search.searchFullStatus);
 
   return (
     <>

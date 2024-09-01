@@ -4,7 +4,7 @@ import { ReactComponent as ArrowRight } from "../../assets/arrowRight.svg";
 import { ReactComponent as SignIn } from "../../assets/profile.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { toggleIsLogged } from "../../store/userSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import { IMenu, State } from "../../utility/types";
@@ -19,9 +19,9 @@ const Profile = ({ className }: IMenu) => {
 
   const user = useSelector((state: State) => state.user.profile);
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+  const toggleMenu = useCallback(() => {
+    setMenuOpen((prev) => !prev);
+  }, []);
 
   const getInitials = (username: string) => {
     if (!username) return "";
@@ -81,9 +81,9 @@ const Profile = ({ className }: IMenu) => {
       <div className={styles.user__name}>
         <span>Sign In</span>
       </div>
-      <button className={styles.arrowRight}>
+      <div className={styles.arrowRight}>
         <ArrowRight />
-      </button>
+      </div>
       <div className={styles.user__menu}></div>
     </button>
   );

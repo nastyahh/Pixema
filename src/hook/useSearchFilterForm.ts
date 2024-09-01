@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { filterInitialState, selectedOptions } from "../utility/types";
 
-export const useSearchFilterForm = (initialState) => {
+export const useSearchFilterForm = (initialState: filterInitialState) => {
   const [searchQuery, setSearchQuery] = useState(initialState);
   const [validity, setValidity] = useState({ title: true, year: true });
 
@@ -11,9 +12,13 @@ export const useSearchFilterForm = (initialState) => {
     if (name === "title" || name === "year") {
       setValidity((prev) => ({ ...prev, [name]: !!value }));
     }
+    console.log(validity);
   };
 
-  const handleSelectChange = (selectedOptions, name: string) => {
+  const handleSelectChange = (
+    selectedOptions: selectedOptions[] | null,
+    name: string
+  ) => {
     setSearchQuery({
       ...searchQuery,
       [name]: selectedOptions

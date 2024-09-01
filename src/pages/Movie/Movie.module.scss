@@ -76,6 +76,14 @@
     line-height: 24px;
     border-radius: 6px;
   }
+  &__rating__number {
+    &.middle {
+      background-color: #f3a608;
+    }
+    &.low {
+      background-color: #f45d2d;
+    }
+  }
   &__rating__imdb,
   &__rating__time {
     display: flex;
@@ -132,14 +140,6 @@
     &__preview__actions button {
       background-color: #1b1a1a;
     }
-    &__rating__number {
-      &.middle {
-        background-color: #f3a608;
-      }
-      &.low {
-        background-color: #f45d2d;
-      }
-    }
   }
 }
 
@@ -178,7 +178,7 @@
 .spinner {
   width: 90px;
   height: 90px;
-  border: 10px solid rgb(123, 97, 255);
+  border: 10px solid $primary-purple;
   border-bottom-color: transparent;
   border-radius: 50%;
   display: inline-block;
@@ -201,7 +201,6 @@
 }
 
 .carousel {
-  // width: 1205px;
   width: 100%;
   margin-left: auto;
   overflow: hidden;

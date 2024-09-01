@@ -1,3 +1,5 @@
+@import "../../scss/variables";
+
 .user {
   position: relative;
   display: flex;
@@ -11,7 +13,7 @@
   &__avatar {
     padding: 16px;
     border-radius: 10px;
-    background-color: #7b61ff;
+    background-color: $primary-purple;
   }
   &__name {
     display: flex;
@@ -25,14 +27,14 @@
     width: 100%;
   }
   &:hover &__name {
-    color: #7b61ff;
+    color: $primary-purple;
   }
   &:hover &__avatar {
     background-color: #917bfc;
   }
   &:hover &__avatar svg path,
   &:hover .arrowRight svg path {
-    fill: #7b61ff;
+    fill: $primary-purple;
   }
   &:hover &__avatar svg path {
     stroke: #000;
@@ -71,7 +73,7 @@
     }
   }
   &__logOut {
-    color: #7b61ff;
+    color: $primary-purple;
     &:hover {
       color: #a18ffe;
     }
@@ -92,7 +94,7 @@
       font-weight: 500;
     }
     &__profile:hover .user__name {
-      color: #7b61ff;
+      color: $primary-purple;
     }
     &__btnBottom svg path {
       stroke: #000;
