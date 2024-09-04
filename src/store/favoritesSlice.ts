@@ -1,15 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { FavoritesState, Movie } from "../utility/types";
 
 const favoritesSlice = createSlice({
   name: "favorites",
   initialState: {
     favoriteMovies: [],
-  },
+  } as FavoritesState,
   reducers: {
-    addFavoriteMovie(state, action) {
+    addFavoriteMovie(state, action: PayloadAction<Movie>) {
       console.log("Adding movie:", action.payload);
       const movieExists = state.favoriteMovies.some(
-        (movie) => movie.imdbID === action.payload.imdbID
+        (movie: Movie) => movie.imdbID === action.payload.imdbID
       );
       if (!movieExists) {
         state.favoriteMovies.push(action.payload);

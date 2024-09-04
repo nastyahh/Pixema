@@ -4,11 +4,14 @@ import Movies from "../../ui-components/Movies/Movies";
 import { ReactComponent as Empty } from "../../assets/empty.svg";
 import { useContext } from "react";
 import { ThemeContext } from "../../Context/context";
+import { State } from "../../utility/types";
 
 const Favorites = () => {
   const { isDark } = useContext(ThemeContext);
-  const favorites = useSelector((state) => state.favorites.favoriteMovies);
-  const movieInfos = useSelector((state) => state.movies.movieInfos);
+  const favorites = useSelector(
+    (state: State) => state.favorites.favoriteMovies
+  );
+  const movieInfos = useSelector((state: State) => state.movies.movieInfos);
 
   return (
     <>

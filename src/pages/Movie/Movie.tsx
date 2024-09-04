@@ -32,7 +32,9 @@ const Movie = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getMovieInfo(imdbID));
+    if (imdbID) {
+      dispatch(getMovieInfo(imdbID));
+    }
   }, [imdbID]);
 
   const isLogged = useSelector((state: State) => state.user.isLogged);
@@ -104,7 +106,7 @@ const Movie = () => {
 
   const shareMessageRef = useRef<HTMLDivElement | null>(null);
 
-  const copyTextToClipboard = useCallback(async (text) => {
+  const copyTextToClipboard = useCallback(async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
 
@@ -122,10 +124,13 @@ const Movie = () => {
   }, []);
 
   const ratingClass =
-    movieInfo.imdbRating <= 6.5 && movieInfo.imdbRating > 5
-      ? styles.middle
-      : movieInfo.imdbRating < 5
-      ? styles.low
+    movieInfo && movieInfo.imdbRating !== undefined
+      ? parseFloat(movieInfo.imdbRating) <= 6.5 &&
+        parseFloat(movieInfo.imdbRating) > 5
+        ? styles.middle
+        : parseFloat(movieInfo.imdbRating) < 5
+        ? styles.low
+        : ""
       : "";
 
   return (
@@ -135,106 +140,108 @@ const Movie = () => {
           <span className={styles.spinner}></span>
         </div>
       ) : (
-        <div className={`${styles.movieInfo} ${isDark ? "" : styles.light}`}>
-          <div className={styles.movie__wrapper}>
-            <div className={styles.shareMessage} ref={shareMessageRef}>
-              Url is copied!
-            </div>
-            <button className={styles.btn_back} onClick={() => navigate(-1)}>
-              <Arrow />
-              <span> Go Back</span>
-            </button>
-            <div className={`${styles.movie} ${isDark ? "" : styles.light}`}>
-              <div className={styles.movie__preview}>
-                <div className={styles.movie__poster}>
-                  <img
-                    src={movieInfo.Poster}
-                    alt="Film Poster"
-                    loading="lazy"
-                  />
+        movieInfo && (
+          <div className={`${styles.movieInfo} ${isDark ? "" : styles.light}`}>
+            <div className={styles.movie__wrapper}>
+              <div className={styles.shareMessage} ref={shareMessageRef}>
+                Url is copied!
+              </div>
+              <button className={styles.btn_back} onClick={() => navigate(-1)}>
+                <Arrow />
+                <span> Go Back</span>
+              </button>
+              <div className={`${styles.movie} ${isDark ? "" : styles.light}`}>
+                <div className={styles.movie__preview}>
+                  <div className={styles.movie__poster}>
+                    <img
+                      src={movieInfo.Poster}
+                      alt="Film Poster"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className={styles.movie__preview__actions}>
+                    <button
+                      onClick={handleAddFavorite}
+                      className={styles.btnFavorite}
+                    >
+                      <Favorite />
+                    </button>
+                    <button
+                      onClick={() => {
+                        const url = window.location.href;
+                        copyTextToClipboard(url);
+                      }}
+                      className={styles.btnShare}
+                    >
+                      <Share />
+                    </button>
+                  </div>
                 </div>
-                <div className={styles.movie__preview__actions}>
-                  <button
-                    onClick={handleAddFavorite}
-                    className={styles.btnFavorite}
-                  >
-                    <Favorite />
-                  </button>
-                  <button
-                    onClick={() => {
-                      const url = window.location.href;
-                      copyTextToClipboard(url);
-                    }}
-                    className={styles.btnShare}
-                  >
-                    <Share />
-                  </button>
+                <div className={styles.movie__desc}>
+                  <div className={styles.movie__genre}>{modifyGenre}</div>
+                  <h1 className={styles.movie__title}>{movieInfo.Title}</h1>
+                  <div className={styles.movie__rating}>
+                    <div
+                      className={`${styles.movie__rating__number} ${ratingClass}`}
+                    >
+                      {movieInfo.imdbRating}
+                    </div>
+                    <div className={styles.movie__rating__imdb}>
+                      <IMDB />
+                      {movieInfo.imdbRating}
+                    </div>
+                    <div className={styles.movie__rating__time}>
+                      {movieInfo.Runtime}
+                    </div>
+                  </div>
+                  <p className={styles.movie__plot}>{movieInfo.Plot}</p>
+                  <div className={styles.movie__details}>
+                    <ul className={styles.movie__details__characteristics}>
+                      <li>Year</li>
+                      <li>Released</li>
+                      <li>BoxOffice</li>
+                      <li>Country</li>
+                      <li>Production</li>
+                      <li>Actors</li>
+                      <li>Director</li>
+                      <li>Writers</li>
+                    </ul>
+                    <ul className={styles.movie__details__info}>
+                      <li>{movieInfo.Year}</li>
+                      <li>{movieInfo.Released}</li>
+                      <li>{movieInfo.BoxOffice}</li>
+                      <li>{movieInfo.Country}</li>
+                      <li>{movieInfo.Production}</li>
+                      <li>{movieInfo.Actors}</li>
+                      <li>{movieInfo.Director}</li>
+                      <li>{movieInfo.Writer}</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-              <div className={styles.movie__desc}>
-                <div className={styles.movie__genre}>{modifyGenre}</div>
-                <h1 className={styles.movie__title}>{movieInfo.Title}</h1>
-                <div className={styles.movie__rating}>
-                  <div
-                    className={`${styles.movie__rating__number} ${ratingClass}`}
-                  >
-                    {movieInfo.imdbRating}
-                  </div>
-                  <div className={styles.movie__rating__imdb}>
-                    <IMDB />
-                    {movieInfo.imdbRating}
-                  </div>
-                  <div className={styles.movie__rating__time}>
-                    {movieInfo.Runtime}
-                  </div>
-                </div>
-                <p className={styles.movie__plot}>{movieInfo.Plot}</p>
-                <div className={styles.movie__details}>
-                  <ul className={styles.movie__details__characteristics}>
-                    <li>Year</li>
-                    <li>Released</li>
-                    <li>BoxOffice</li>
-                    <li>Country</li>
-                    <li>Production</li>
-                    <li>Actors</li>
-                    <li>Director</li>
-                    <li>Writers</li>
-                  </ul>
-                  <ul className={styles.movie__details__info}>
-                    <li>{movieInfo.Year}</li>
-                    <li>{movieInfo.Released}</li>
-                    <li>{movieInfo.BoxOffice}</li>
-                    <li>{movieInfo.Country}</li>
-                    <li>{movieInfo.Production}</li>
-                    <li>{movieInfo.Actors}</li>
-                    <li>{movieInfo.Director}</li>
-                    <li>{movieInfo.Writer}</li>
-                  </ul>
-                </div>
-              </div>
+            </div>
+            <div className={styles.carousel}>
+              <h3 className={styles.movie__recommend}>Recommendations</h3>
+              {recommend.length > 0 ? (
+                <>
+                  <OwlCarousel className="owl-theme" {...options}>
+                    {recommend
+                      .filter((movie) => parseFloat(movie.imdbRating) > 7.0)
+                      .map((movie) => (
+                        <Movies
+                          key={movie.imdbID}
+                          data={recommend}
+                          movieInfos={recommend}
+                        />
+                      ))}
+                  </OwlCarousel>
+                </>
+              ) : (
+                <p>Loading recommended films...</p>
+              )}
             </div>
           </div>
-          <div className={styles.carousel}>
-            <h3 className={styles.movie__recommend}>Recommendations</h3>
-            {recommend.length > 0 ? (
-              <>
-                <OwlCarousel className="owl-theme" {...options}>
-                  {recommend
-                    .filter((movie) => parseFloat(movie.imdbRating) > 7.0)
-                    .map((movie) => (
-                      <Movies
-                        key={movie.imdbID}
-                        data={recommend}
-                        movieInfos={recommend}
-                      />
-                    ))}
-                </OwlCarousel>
-              </>
-            ) : (
-              <p>Loading recommended films...</p>
-            )}
-          </div>
-        </div>
+        )
       )}
     </>
   );

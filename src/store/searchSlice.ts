@@ -1,12 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Movie, MovieInfo, SearchState } from "../utility/types";
 
 export const getMovieInfo = createAsyncThunk(
   "movies/getMovieInfo",
   async ({
     imdbID,
-    genres,
-    rating,
-    country,
   }: {
     imdbID: string;
     genres?: string[];
@@ -25,31 +23,71 @@ export const getMovieInfo = createAsyncThunk(
   }
 );
 
-export const searchByFilters = createAsyncThunk(
+// export const searchByFilters = createAsyncThunk(
+//   "search/searchByFilters",
+//   async (
+//     {
+//       title,
+//       year,
+//       genres,
+//       rating,
+//       country,
+//     }: {
+//       title: string;
+//       year: string;
+//       genres?: string[];
+//       rating?: string;
+//       country?: string[];
+//     },
+//     { rejectWithValue, dispatch }
+//   ) => {
+//     const responce = await fetch(
+//       `https://www.omdbapi.com/?apikey=2c09a177&s=${title}&y=${year}`
+//     );
+//     if (!responce.ok) {
+//       throw new Error("Error find movies");
+//     }
+//     const data = await responce.json();
+//     if (data.Response === "False") {
+//       return rejectWithValue(data.Error);
+//     }
+//     const movies = data.Search;
+//     dispatch(clearSearchFull());
+
+//     await Promise.all(
+//       movies.map(async (movie) => {
+//         const infoResponse = await dispatch(
+//           getMovieInfo({ imdbID: movie.imdbID, genres, rating, country })
+//         );
+//         return infoResponse.payload;
+//       })
+//     );
+
+//     return movies;
+//   }
+// );
+export const searchByFilters = createAsyncThunk<
+  Movie[],
+  {
+    title: string;
+    year: string;
+    genres?: string[];
+    rating?: string;
+    country?: string[];
+  }
+>(
   "search/searchByFilters",
   async (
-    {
-      title,
-      year,
-      genres,
-      rating,
-      country,
-    }: {
-      title: string;
-      year: string;
-      genres?: string[];
-      rating?: string;
-      country?: string[];
-    },
+    { title, year, genres = [], rating, country = [] },
     { rejectWithValue, dispatch }
   ) => {
-    const responce = await fetch(
+    const response = await fetch(
       `https://www.omdbapi.com/?apikey=2c09a177&s=${title}&y=${year}`
     );
-    if (!responce.ok) {
-      throw new Error("Error find movies");
+    if (!response.ok) {
+      throw new Error("Error finding movies");
     }
-    const data = await responce.json();
+    const data = await response.json();
     if (data.Response === "False") {
       return rejectWithValue(data.Error);
     }
@@ -57,9 +95,14 @@ export const searchByFilters = createAsyncThunk(
     dispatch(clearSearchFull());
 
     await Promise.all(
-      movies.map(async (movie) => {
+      movies.map(async (movie: MovieInfo) => {
         const infoResponse = await dispatch(
-          getMovieInfo({ imdbID: movie.imdbID, genres, rating, country })
+          getMovieInfo({
+            imdbID: movie.imdbID,
+            genres,
+            rating,
+            country: country[0],
+          })
         );
         return infoResponse.payload;
       })
@@ -69,17 +112,30 @@ export const searchByFilters = createAsyncThunk(
   }
 );
 
-export const searchMovies = createAsyncThunk(
+// export const searchMovies = createAsyncThunk(
+//   "search/searchMovies",
+//   async (str: string) => {
+//     const responce = await fetch(
+//       `https://www.omdbapi.com/?apikey=2c09a177&s=${str}`
+//     );
+//     if (!responce.ok) {
+//       throw new Error("Error find movies");
+//     }
+//     const data = await responce.json();
+
+//     return data.Search;
+//   }
+// );
+export const searchMovies = createAsyncThunk<Movie[], string>(
   "search/searchMovies",
-  async (str: string) => {
-    const responce = await fetch(
+  async (str) => {
+    const response = await fetch(
       `https://www.omdbapi.com/?apikey=2c09a177&s=${str}`
     );
-    if (!responce.ok) {
-      throw new Error("Error find movies");
+    if (!response.ok) {
+      throw new Error("Error finding movies");
     }
-    const data = await responce.json();
-
+    const data = await response.json();
     return data.Search;
   }
 );
@@ -88,14 +144,14 @@ const searchSlice = createSlice({
   name: "search",
   initialState: {
     query: "",
-    searchMovies: [],
-    searchByFilters: [],
+    searchMovies: [] as Movie[],
+    searchByFilters: [] as Movie[],
     searchFullStatus: null as null | "loading" | "fulfilled" | "rejected",
-    searchFull: [],
-    status: "",
-    error: null,
+    searchFull: [] as Movie[],
+    status: "idle",
+    error: null as string | null,
     filtersIsApplied: false,
-  },
+  } as SearchState,
   reducers: {
     updateSearchQuery(state, action) {
       state.query = action.payload;
@@ -136,13 +192,17 @@ const searchSlice = createSlice({
       .addCase(getMovieInfo.fulfilled, (state, action) => {
         state.searchFullStatus = "fulfilled";
         const movie = action.payload;
-        const ratingRange = action.meta.arg.rating.split("-");
+        // const ratingRange = action.meta.arg.rating.split("-");
+        const ratingRange = action.meta.arg.rating
+          ? action.meta.arg.rating.split("-")
+          : [];
         const minRating = parseFloat(ratingRange[0]);
         const maxRating = parseFloat(ratingRange[1]);
         const movieRating = parseFloat(movie.imdbRating);
 
         const matchesGenres =
-          !action.meta.arg.genres.length ||
+          !action.meta.arg.genres ||
+          action.meta.arg.genres.length === 0 ||
           action.meta.arg.genres.every((genre) => movie.Genre.includes(genre));
 
         const matchesRating =

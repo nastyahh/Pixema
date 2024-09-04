@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { filterInitialState, selectedOptions } from "../utility/types";
+import { OptionType, filterInitialState } from "../utility/types";
+import { MultiValue } from "react-select";
 
 export const useSearchFilterForm = (initialState: filterInitialState) => {
   const [searchQuery, setSearchQuery] = useState(initialState);
@@ -16,12 +17,12 @@ export const useSearchFilterForm = (initialState: filterInitialState) => {
   };
 
   const handleSelectChange = (
-    selectedOptions: selectedOptions[] | null,
-    name: string
+    selectedOptions: MultiValue<OptionType>,
+    field: string
   ) => {
     setSearchQuery({
       ...searchQuery,
-      [name]: selectedOptions
+      [field]: selectedOptions
         ? selectedOptions.map((option) => option.label)
         : [],
     });

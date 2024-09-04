@@ -1,9 +1,5 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  isRejectedWithValue,
-} from "@reduxjs/toolkit";
-import { ActivateUser } from "../utility/types";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ActivateUser, ResetPasswordConfirm } from "../utility/types";
 
 export const createUser = createAsyncThunk(
   "user/createUser",
@@ -120,7 +116,6 @@ export const userActivate = createAsyncThunk(
         uid: activateObj.uid,
         token: activateObj.token,
       };
-      console.log(activateData);
       const responce = await fetch(
         "https://studapi.teachmeskills.by/auth/users/activation/",
         {
@@ -134,8 +129,6 @@ export const userActivate = createAsyncThunk(
       if (!responce.ok) {
         throw new Error("Error :(");
       }
-      const data = await responce.json();
-      console.log(data);
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
@@ -170,7 +163,7 @@ export const refreshToken = createAsyncThunk(
 
 export const resetPassword = createAsyncThunk(
   "user/resetPassword",
-  async (email, { rejectWithValue }) => {
+  async (email: string, { rejectWithValue }) => {
     try {
       const response = await fetch(
         "https://studapi.teachmeskills.by/auth/users/reset_password/",
@@ -193,7 +186,10 @@ export const resetPassword = createAsyncThunk(
 
 export const resetPasswordConfirm = createAsyncThunk(
   "user/resetPassword",
-  async ({ uid, token, newPassword }, { rejectWithValue }) => {
+  async (
+    { uid, token, newPassword }: ResetPasswordConfirm,
+    { rejectWithValue }
+  ) => {
     try {
       const response = await fetch(
         "https://studapi.teachmeskills.by/auth/users/reset_password_confirm/",

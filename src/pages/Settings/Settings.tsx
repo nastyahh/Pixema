@@ -6,10 +6,11 @@ import { setPassword } from "../../store/settingsSlice";
 import { Link } from "react-router-dom";
 import "../../scss/_global.scss";
 import { State } from "../../utility/types";
+import { AppDispatch } from "../../store";
 
 const Settings = () => {
   const { isDark, toggleTheme } = useContext(ThemeContext);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const userData = useSelector((state: State) => state.user.profile);
 
@@ -19,23 +20,12 @@ const Settings = () => {
     confirmPassword: "",
   });
 
-  const [isFocused, setIsFocused] = useState(false);
-
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-  };
-
   const handleCancel = () => {
     setPasswordData({
       currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     });
-    setIsFocused(false);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,8 +91,6 @@ const Settings = () => {
               placeholder="Your password"
               value={passwordData.currentPassword}
               onChange={handleChange}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
             />
           </div>
           <div className={styles.settings_inputWrap}>
@@ -113,8 +101,6 @@ const Settings = () => {
               placeholder="New Password"
               value={passwordData.newPassword}
               onChange={handleChange}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
             />
             <label htmlFor="">Confirm Password</label>
             <input
@@ -123,8 +109,6 @@ const Settings = () => {
               placeholder="Confirm Password"
               value={passwordData.confirmPassword}
               onChange={handleChange}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
             />
           </div>
         </div>
@@ -135,12 +119,12 @@ const Settings = () => {
           {isDark ? (
             <div className={styles.settings_modeTheme}>
               <label className={styles.settings_modeTheme__name}>Dark</label>
-              <p>Use dark thema</p>
+              <p>Use dark theme</p>
             </div>
           ) : (
             <div className={styles.settings_modeTheme}>
               <label className={styles.settings_modeTheme__name}>Light</label>
-              <p>Use light thema</p>
+              <p>Use light theme</p>
             </div>
           )}
           <label className={styles.switch}>

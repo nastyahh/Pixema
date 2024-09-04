@@ -18,13 +18,14 @@ import { ThemeContext } from "../../Context/context";
 import { useDebounce } from "../../hook/useDebounce";
 import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
 import Menu from "../Menu/Menu";
+import { State } from "../../utility/types";
 
 const Header = () => {
   const [search, setSearch] = useState("");
-  const { isFilterMenuOpen, toggleFilterMenu } = useFilterMenu();
+  const { toggleFilterMenu } = useFilterMenu();
   const { isDark } = useContext(ThemeContext);
   const filtersIsApplied = useSelector(
-    (state) => state.search.filtersIsApplied
+    (state: State) => state.search.filtersIsApplied
   );
 
   const debouncedSearch = useDebounce(search);

@@ -8,6 +8,7 @@ export const options = [
   { value: "Crime", label: "Crime" },
   { value: "Animation", label: "Animation" },
   { value: "Fantasy", label: "Fantasy" },
+  { value: "Family", label: "Family" },
   { value: "Mystery", label: "Mystery" },
   { value: "Music", label: "Music" },
   { value: "Short", label: "Short" },

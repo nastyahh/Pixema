@@ -6,10 +6,10 @@ import { getMovieInfo, getMovies } from "../../store/moviesSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import Movies from "../../ui-components/Movies/Movies";
 import { fetchMovies } from "../../store/paginationSlice";
-import { State } from "../../utility/types";
+import { MovieInfo, State } from "../../utility/types";
 import { ReactComponent as NotFound } from "../../assets/empty.svg";
 
-const Home = ({ isDark }) => {
+const Home = ({ isDark }: { isDark: boolean }) => {
   const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
 
   const {
@@ -40,7 +40,9 @@ const Home = ({ isDark }) => {
     const allMovies = [...data, ...movies];
     if (allMovies.length > 0) {
       Promise.all(
-        allMovies.map((movie) => dispatch(getMovieInfo(movie.imdbID)))
+        allMovies.map((movie: MovieInfo) =>
+          dispatch(getMovieInfo(movie.imdbID))
+        )
       );
     }
   }, [data, movies]);
@@ -48,7 +50,9 @@ const Home = ({ isDark }) => {
   useEffect(() => {
     if (searchResults.length > 0) {
       Promise.all(
-        searchResults.map((movie) => dispatch(getMovieInfo(movie.imdbID)))
+        searchResults.map((movie: MovieInfo) =>
+          dispatch(getMovieInfo(movie.imdbID))
+        )
       );
     }
   }, [searchResults]);

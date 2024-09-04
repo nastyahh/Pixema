@@ -3,6 +3,9 @@ export interface IActiveContext {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+export interface IChildren {
+  children: React.ReactNode[] | React.ReactNode;
+}
 export interface IThemeContext {
   isDark: boolean;
   toggleTheme: () => void;
@@ -43,12 +46,10 @@ export interface User {
   email: string;
   password: string;
 }
-
 export interface ActivateUser {
   uid: string;
   token: string;
 }
-
 export interface SearchQuery {
   title: string;
   year: string;
@@ -62,6 +63,44 @@ export interface Movie {
   imdbID: string;
   Title: string;
   Poster: string;
+}
+export interface FavoritesState {
+  favoriteMovies: Movie[];
+}
+
+export interface MoviesState {
+  movies: Movie[];
+  trends: Movie[];
+  movieInfo: MovieInfo | null;
+  movieInfos: MovieInfo[];
+  recommendedMovies: Movie[];
+  recommendedMoviesStatus: "loading" | "fulfilled" | "rejected" | null;
+  status: "loading" | "fulfilled" | "rejected" | null;
+  movieInfoStatus: "loading" | "fulfilled" | "rejected" | null;
+  trendsStatus: "loading" | "fulfilled" | "rejected" | null;
+}
+
+export interface PaginationState {
+  movies: Movie[];
+  currentPage: number;
+  status: "idle" | "loading" | "fulfilled" | "rejected" | "";
+}
+
+export interface SearchState {
+  query: string;
+  searchMovies: Movie[];
+  searchByFilters: Movie[];
+  searchFullStatus: null | "loading" | "fulfilled" | "rejected";
+  searchFull: Movie[];
+  status: "idle" | "loading" | "fulfilled" | "rejected";
+  error: string | null;
+  filtersIsApplied: boolean;
+}
+
+export interface MoviesResponse {
+  Search: Movie[];
+  totalResults: string;
+  Response: string;
 }
 export interface FilteredMoviesProps {
   data: Movie[];
@@ -83,12 +122,10 @@ export interface MovieInfo {
   Director: string;
   Writer: string;
 }
-
 export interface MoviesProps {
   data: MovieInfo[];
   movieInfos: MovieInfo[];
 }
-
 export interface filterInitialState {
   title: string;
   year: string;
@@ -97,12 +134,27 @@ export interface filterInitialState {
   maxRating: string;
   country: string[];
 }
-
 export interface selectedOptions {
   label: string;
   value: string;
 }
 
+export type OptionType = {
+  value: string;
+  label: string;
+};
+
+export interface ResetPasswordConfirm {
+  uid: string;
+  token: string;
+  newPassword: string;
+}
+
+export interface SetPassword {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword?: string;
+}
 export interface State {
   user: {
     isLogged: boolean;
@@ -120,7 +172,7 @@ export interface State {
     movieInfoStatus: string | null;
     trendsStatus: string | null;
     trends: [];
-    recommendedMovies: [];
+    recommendedMovies: MovieInfo[];
   };
   pagination: {
     movies: [];
@@ -133,8 +185,13 @@ export interface State {
     searchFull: [];
     status: string;
     searchFullStatus: string | null;
+    filtersIsApplied: boolean;
+    query?: string;
   };
   navbar: {
     isLogged: boolean;
+  };
+  favorites: {
+    favoriteMovies: MovieInfo[];
   };
 }

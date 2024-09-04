@@ -1,10 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { SetPassword } from "../utility/types";
 
 export const setPassword = createAsyncThunk(
   "settings/setPassword",
-  async ({ currentPassword, newPassword }, { rejectWithValue }) => {
+  async (
+    { currentPassword, newPassword }: SetPassword,
+    { rejectWithValue }
+  ) => {
     try {
-      const token = JSON.parse(localStorage.getItem("Login")).access;
+      const loginItem = localStorage.getItem("Login");
+      if (!loginItem) {
+        throw new Error("Login information is missing");
+      }
+      const { access: token } = JSON.parse(loginItem);
 
       const response = await fetch(
         "https://studapi.teachmeskills.by/auth/users/set_password/",
@@ -27,7 +35,7 @@ export const setPassword = createAsyncThunk(
       const data = await response.json();
       return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue((error as Error).message);
     }
   }
 );

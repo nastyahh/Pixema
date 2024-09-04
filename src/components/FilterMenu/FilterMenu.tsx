@@ -12,6 +12,7 @@ import countryList from "react-select-country-list";
 import { customStyles } from "./filterCustomStyles";
 import { options } from "./filterGenreOptions";
 import { useSearchFilterForm } from "../../hook/useSearchFilterForm";
+import { OptionType } from "../../utility/types";
 
 const FilterMenu = () => {
   const { isFilterMenuOpen, toggleFilterMenu } = useFilterMenu();
@@ -110,7 +111,7 @@ const FilterMenu = () => {
           )}
         </div>
         <label>Genre</label>{" "}
-        <Select
+        <Select<OptionType, true>
           styles={customStyles}
           isMulti
           name="genres"
@@ -119,6 +120,7 @@ const FilterMenu = () => {
           isSearchable
           classNamePrefix="select"
           onChange={(selectedOptions) => {
+            console.log("countries", selectedOptions);
             handleSelectChange(selectedOptions, "genres");
           }}
           value={searchQuery.genres.map((genre: string) => ({
@@ -149,7 +151,7 @@ const FilterMenu = () => {
           </div>
         </div>
         <label>Country</label>
-        <Select
+        <Select<OptionType, true> // Используем дженерики для компонента Select
           styles={customStyles}
           isMulti
           name="country"
@@ -157,6 +159,7 @@ const FilterMenu = () => {
           className="basic-multi-select"
           isSearchable
           onChange={(selectedOptions) => {
+            console.log("countries", selectedOptions);
             handleSelectChange(selectedOptions, "country");
           }}
           value={countryOptions.filter((option) =>

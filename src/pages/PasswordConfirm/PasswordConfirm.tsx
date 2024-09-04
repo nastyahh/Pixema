@@ -6,10 +6,11 @@ import { ReactComponent as Info } from "../../assets/info.svg";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../Context/context";
 import InputPassword from "../../ui-components/InputPassword/InputPassword";
+import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 
 const PasswordConfirm = () => {
   const { isDark } = useContext(ThemeContext);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
   const navigate = useNavigate();
   const [passwordData, setPasswordData] = useState({
     uid: "",

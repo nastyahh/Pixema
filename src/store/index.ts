@@ -6,7 +6,7 @@ import paginationSlice from "./paginationSlice";
 import searchSlice from "./searchSlice";
 import settingsSlice from "./settingsSlice";
 
-export default configureStore({
+const store = configureStore({
   reducer: {
     user: userSlice,
     movies: moviesSlice,
@@ -16,3 +16,8 @@ export default configureStore({
     settings: settingsSlice,
   },
 });
+
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+
+export default store;

@@ -1,4 +1,11 @@
-export const customStyles = {
+import { GroupBase, StylesConfig } from "react-select";
+import { OptionType } from "../../utility/types";
+
+export const customStyles: StylesConfig<
+  OptionType,
+  true,
+  GroupBase<OptionType>
+> = {
   control: (provided) => ({
     ...provided,
     backgroundColor: "#323537",

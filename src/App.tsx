@@ -9,7 +9,6 @@ import Home from "./pages/Home/Home";
 import Movie from "./pages/Movie/Movie";
 import Favorites from "./pages/Favorites/Favorites";
 import Trends from "./pages/Trends/Trends";
-import Auth from "./HOC/Auth";
 import Settings from "./pages/Settings/Settings";
 import SearchByFilters from "./pages/SearchByFilters/SearchByFilters";
 import Confirmation from "./pages/Confirmation/Confirmation";
@@ -20,17 +19,10 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
+        <Route index element={<Home isDark={false} />} />
         <Route path="activate/:uid/:token" element={<Activation />} />
         <Route path="/:imdbID" element={<Movie />} />
-        <Route
-          path="favorites"
-          element={
-            // <Auth>
-            <Favorites />
-            // </Auth>
-          }
-        />
+        <Route path="favorites" element={<Favorites />} />
         <Route path="trends" element={<Trends />} />
         <Route path="settings" element={<Settings />} />
         <Route path="search-by-filters" element={<SearchByFilters />} />

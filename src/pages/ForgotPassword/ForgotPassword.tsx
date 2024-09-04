@@ -4,10 +4,11 @@ import { resetPassword } from "../../store/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../Context/context";
+import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 
 const ForgotPassword = () => {
   const { isDark } = useContext(ThemeContext);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<unknown, unknown, Action>>();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");

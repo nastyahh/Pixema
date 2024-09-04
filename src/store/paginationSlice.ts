@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { MoviesResponse, PaginationState } from "../utility/types";
 
-export const fetchMovies = createAsyncThunk(
+export const fetchMovies = createAsyncThunk<MoviesResponse, number>(
   "pagination/fetchMovies",
-  async (page) => {
+  async (page: number) => {
     console.log(page);
     const responce = await fetch(
       `https://www.omdbapi.com/?apikey=2c09a177&s=batman&page=${page}`
@@ -18,7 +19,7 @@ const paginationSlice = createSlice({
     movies: [],
     currentPage: 1,
     status: "",
-  },
+  } as PaginationState,
   reducers: {},
   extraReducers: (builder) => {
     builder
