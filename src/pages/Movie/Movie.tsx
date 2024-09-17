@@ -96,7 +96,7 @@ const Movie = () => {
   );
 
   const handleAddFavorite = useCallback(() => {
-    if (isLogged) {
+    if (isLogged && movieInfo) {
       dispatch(addFavoriteMovie(movieInfo));
       console.log("movieInfo", movieInfo);
     } else {

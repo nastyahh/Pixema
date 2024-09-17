@@ -3,25 +3,42 @@ import styles from "./Movies.module.scss";
 import { ReactComponent as Fire } from "../../assets/fire.svg";
 import { useContext } from "react";
 import { ThemeContext } from "../../Context/context";
-import { MoviesProps } from "../../utility/types";
+import { MovieInfo, MoviesProps } from "../../utility/types";
 
 const Movies = ({ data, movieInfos }: MoviesProps) => {
   const { isDark } = useContext(ThemeContext);
   const location = useLocation();
 
   const moviesToRender = data.map(({ imdbID, Title, Poster }) => {
-    let movieInfo = Array<{}>;
+    // let movieInfo = Array<{}>;
+    let movieInfo: MovieInfo = {
+      imdbID: "",
+      Title: "",
+      Poster: "",
+      Genre: "",
+      imdbRating: "",
+      Runtime: "",
+      Plot: "",
+      Year: "",
+      Released: "",
+      BoxOffice: "",
+      Country: "",
+      Production: "",
+      Actors: "",
+      Director: "",
+      Writer: "",
+    };
 
     if (Array.isArray(movieInfos)) {
       movieInfo =
-        movieInfos.find((info) => {
-          return info.imdbID === imdbID;
-        }) || {};
+        movieInfos.find((info) => info.imdbID === imdbID) || movieInfo;
     }
     const ratingClass =
-      movieInfo.imdbRating <= 6.5 && movieInfo.imdbRating > 5
+      movieInfo.imdbRating &&
+      parseFloat(movieInfo.imdbRating) <= 6.5 &&
+      parseFloat(movieInfo.imdbRating) > 5
         ? styles.middle
-        : movieInfo.imdbRating < 5
+        : movieInfo.imdbRating && parseFloat(movieInfo.imdbRating) < 5
         ? styles.low
         : "";
 
