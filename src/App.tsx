@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import Layout from "./Layout";
 import SignIn from "./pages/SignIn/SignIn";
@@ -21,12 +21,13 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home isDark={false} />} />
         <Route path="activate/:uid/:token" element={<Activation />} />
-        <Route path="/:imdbID" element={<Movie />} />
+        <Route path=":imdbID" element={<Movie />} />
         <Route path="favorites" element={<Favorites />} />
         <Route path="trends" element={<Trends />} />
         <Route path="settings" element={<Settings />} />
         <Route path="search-by-filters" element={<SearchByFilters />} />
         <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/Pixema" element={<Navigate to="/" replace />} />
       </Route>
       <Route element={<AuthLayout />}>
         {" "}
